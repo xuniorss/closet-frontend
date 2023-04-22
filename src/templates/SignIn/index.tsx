@@ -1,11 +1,20 @@
 'use client'
 
-import { Box, Button, Heading, Input } from '@chakra-ui/react'
+import {
+   Box,
+   Button,
+   FormControl,
+   FormErrorMessage,
+   FormHelperText,
+   FormLabel,
+   Heading,
+   Input,
+} from '@chakra-ui/react'
 import { motion } from 'framer-motion'
-import { useState } from 'react'
+import { useSignIn } from './hook/useSignIn'
 
 export default function SignInTemplate() {
-   const [step, setStep] = useState(0)
+   const { step, stepSetState, register, errors, onSubmit, handleSubmit, watch } = useSignIn()
 
    return (
       <Box display="flex" flexDir="column" textAlign="center" alignItems="center" mt="8.438rem">
@@ -13,7 +22,7 @@ export default function SignInTemplate() {
             Informe seus dados e tenha acesso a área restrita.
          </Heading>
 
-         <Box as="form">
+         <Box as="form" onSubmit={handleSubmit(onSubmit)}>
             {step === 0 && (
                <Box
                   as={motion.div}
@@ -25,15 +34,23 @@ export default function SignInTemplate() {
                   display="flex"
                   flexDir="column"
                >
-                  <Input
-                     bgColor="#F1F1F1"
-                     _placeholder={{ color: 'black' }}
-                     placeholder="Informe o e-mail de cadastro"
-                     type="email"
-                     w="29.375rem"
-                     h="4.063rem"
-                     fontSize="lg"
-                  />
+                  <FormControl>
+                     <FormLabel>E-mail</FormLabel>
+                     <Input
+                        bgColor="#F1F1F1"
+                        _placeholder={{ color: 'black' }}
+                        placeholder="Informe o e-mail de cadastro"
+                        type="email"
+                        w="29.375rem"
+                        h="4.063rem"
+                        fontSize="lg"
+                        {...register('email', { required: true })}
+                     />
+
+                     <FormHelperText color="blackAlpha.500">
+                        Nunca vamos compartilhar seu e-mail com ninguém
+                     </FormHelperText>
+                  </FormControl>
 
                   <Box display="flex" justifyContent="flex-end" mt="2.5rem">
                      <Button
@@ -43,7 +60,9 @@ export default function SignInTemplate() {
                         bgColor="#D4BF90"
                         _hover={{ bgColor: '#d4be90e2' }}
                         color="white"
-                        onClick={() => setStep(1)}
+                        type="button"
+                        onClick={() => stepSetState(1)}
+                        isDisabled={watch('email') === ''}
                      >
                         Avançar
                      </Button>
@@ -70,6 +89,7 @@ export default function SignInTemplate() {
                      w="29.375rem"
                      h="4.063rem"
                      fontSize="lg"
+                     {...register('password', { required: true })}
                   />
 
                   <Box display="flex" justifyContent="space-between" mt="2.5rem">
@@ -80,7 +100,8 @@ export default function SignInTemplate() {
                         color="#D4BF90"
                         variant="ghost"
                         border="1px solid #D4BF90"
-                        onClick={() => setStep(0)}
+                        type="button"
+                        onClick={() => stepSetState(0)}
                      >
                         Voltar
                      </Button>
@@ -92,7 +113,7 @@ export default function SignInTemplate() {
                         bgColor="#D4BF90"
                         _hover={{ bgColor: '#d4be90e2' }}
                         color="white"
-                        // onClick={() => setStep(0)}
+                        type="submit"
                      >
                         Acessar
                      </Button>
