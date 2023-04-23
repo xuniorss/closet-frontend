@@ -1,7 +1,8 @@
+import { zodResolver } from '@hookform/resolvers/zod'
 import { useCallback, useEffect, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
+
 import { schemaSignIn, SignInProps } from '../../validators'
-import { zodResolver } from '@hookform/resolvers/zod'
 
 export const useSignIn = () => {
    const [step, setStep] = useState(0)
@@ -22,11 +23,8 @@ export const useSignIn = () => {
       resolver: zodResolver(schemaSignIn),
    })
 
-   useEffect(() => {
-      console.log(errors)
-   }, [errors])
-
    const onSubmit: SubmitHandler<SignInProps> = useCallback((data) => {
+      if (!data) return
       console.log(data)
    }, [])
 

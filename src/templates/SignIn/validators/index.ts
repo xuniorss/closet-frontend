@@ -1,7 +1,7 @@
 import { z } from 'zod'
 
 export const schemaSignIn = z.object({
-   email: z.string().email({ message: 'O email informado é invalido' }),
+   email: z.string().email({ message: 'O email informado é inválido' }),
    password: z.string().min(8, { message: 'Senha deve conter no mínimo 8 caracteres' }),
 })
 
