@@ -1,11 +1,12 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useId, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 
 import { schemaSignIn, SignInProps } from '../../validators'
 
 export const useSignIn = () => {
    const [step, setStep] = useState(0)
+   const id = useId()
 
    const stepSetState = useCallback((value: number) => {
       setStep(value)
@@ -28,5 +29,5 @@ export const useSignIn = () => {
       console.log(data)
    }, [])
 
-   return { step, stepSetState, register, handleSubmit, errors, onSubmit, watch }
+   return { step, stepSetState, register, handleSubmit, errors, onSubmit, watch, id }
 }

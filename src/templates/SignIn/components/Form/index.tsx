@@ -1,17 +1,11 @@
-import {
-   Box,
-   FormControl,
-   FormErrorMessage,
-   FormHelperText,
-   FormLabel,
-   Input,
-} from '@chakra-ui/react'
+import { Box, FormControl, FormErrorMessage, FormHelperText, FormLabel, Input } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
+
 import { useSignIn } from '../../hook/useSignIn'
 import { Buttons } from '../Buttons'
 
 export const FormComponent = () => {
-   const { errors, handleSubmit, onSubmit, step, register, stepSetState, watch } = useSignIn()
+   const { errors, handleSubmit, onSubmit, step, register, stepSetState, watch, id } = useSignIn()
 
    return (
       <Box as="form" onSubmit={handleSubmit(onSubmit)}>
@@ -27,8 +21,9 @@ export const FormComponent = () => {
                flexDir="column"
             >
                <FormControl isInvalid={!!errors.email}>
-                  <FormLabel>E-mail</FormLabel>
+                  <FormLabel htmlFor={`${id}-email`}>E-mail</FormLabel>
                   <Input
+                     id={`${id}-email`}
                      bgColor="#F1F1F1"
                      _placeholder={{ color: 'black' }}
                      placeholder="Informe o e-mail de cadastro"
@@ -72,8 +67,9 @@ export const FormComponent = () => {
                flexDir="column"
             >
                <FormControl isInvalid={!!errors.password}>
-                  <FormLabel>Senha</FormLabel>
+                  <FormLabel htmlFor={`${id}-password`}>Senha</FormLabel>
                   <Input
+                     id={`${id}-password`}
                      bgColor="#F1F1F1"
                      _placeholder={{ color: 'black' }}
                      placeholder="Informe a senha de cadastro"
