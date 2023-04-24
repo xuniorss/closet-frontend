@@ -1,16 +1,20 @@
+import { useAuth } from '@/hooks/useAuth'
 import { Tag } from '@chakra-ui/react'
 import { usePathname, useRouter } from 'next/navigation'
 import { Fragment, useCallback } from 'react'
 
 export const ButtonRestrictArea = () => {
+   const { user, signOut } = useAuth()
    const path = usePathname()
    const router = useRouter()
 
    const onClickButton = useCallback(() => {
-      if (path !== '/restrict') return router.push('/signin')
+      if (user && path === '/restrict') return signOut()
 
-      router.push('/')
-   }, [path, router])
+      if (user) return router.push('/restrict')
+
+      if (!user && path !== '/restrict') return router.push('/signin')
+   }, [path, router, signOut, user])
 
    return (
       <Fragment>

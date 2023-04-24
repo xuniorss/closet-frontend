@@ -2,8 +2,9 @@ import { api } from '@/services/apiClient'
 import { userApi } from '@/services/apis'
 import { SignInProps } from '@/templates/SignIn/validators'
 import { useRouter } from 'next/navigation'
-import { destroyCookie, setCookie } from 'nookies'
+import { destroyCookie, parseCookies, setCookie } from 'nookies'
 import { createContext, useCallback } from 'react'
+import { useQuery } from 'react-query'
 
 import { AuthContextData, AuthProviderProps } from '../models/AuthContex'
 import { useUser } from './utils/reducerUser'
@@ -14,16 +15,38 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
    const [state, dispatch] = useUser({ user: null })
    const router = useRouter()
 
+   useQuery<void>(
+      `${process.env.NEXT_PUBLIC_AUTH_USER}`,
+      async () => {
+         const cookies = parseCookies()
+         const token = cookies[`${process.env.NEXT_PUBLIC_COOKIES}`]
+
+         if (token) {
+            try {
+               await userApi.me().then((res) => {
+                  dispatch({ type: 'USER', payload: { user: res } })
+               })
+            } catch (error) {
+               signOut()
+               console.error(error)
+            }
+         }
+      },
+      { staleTime: 1000 * 60 }
+   )
+
    const signOut = useCallback(() => {
       try {
          destroyCookie(undefined, `${process.env.NEXT_PUBLIC_COOKIES}`)
          localStorage.removeItem(`${process.env.NEXT_PUBLIC_COOKIES}`)
 
          dispatch({ type: 'USER', payload: { user: null } })
+
+         router.push('/')
       } catch (error) {
          console.error(error)
       }
-   }, [dispatch])
+   }, [dispatch, router])
 
    const signIn = useCallback(
       async ({ email, password }: SignInProps) => {
