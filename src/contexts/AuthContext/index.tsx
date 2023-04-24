@@ -74,7 +74,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       [dispatch, router]
    )
 
-   const valueProvider = { user: state.user, signOut, signIn }
+   const valueProvider = { user: state.user, isAuthenticated: !!state.user, signOut, signIn }
 
    return <AuthContext.Provider value={valueProvider}>{children}</AuthContext.Provider>
 }
