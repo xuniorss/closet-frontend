@@ -7,12 +7,14 @@ type ButtonsProps = {
    isDisabled?: boolean
    label: string
    onClick?: () => void
+   isLoading?: boolean
 }
 
 export const Buttons = ({
    btnSubmit = false,
    isBack = false,
    isDisabled = false,
+   isLoading = false,
    label = '',
    onClick,
 }: ButtonsProps) => {
@@ -29,6 +31,7 @@ export const Buttons = ({
          _hover={{ bgColor: `${isBack ? '' : '#d4be90e2'}` }}
          onClick={onClick}
          isDisabled={isDisabled}
+         isLoading={isLoading}
       >
          {label}
       </Button>

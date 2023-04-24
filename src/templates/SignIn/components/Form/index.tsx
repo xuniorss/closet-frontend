@@ -1,11 +1,19 @@
-import { Box, FormControl, FormErrorMessage, FormHelperText, FormLabel, Input } from '@chakra-ui/react'
+import {
+   Box,
+   FormControl,
+   FormErrorMessage,
+   FormHelperText,
+   FormLabel,
+   Input,
+} from '@chakra-ui/react'
 import { motion } from 'framer-motion'
 
 import { useSignIn } from '../../hook/useSignIn'
 import { Buttons } from '../Buttons'
 
 export const FormComponent = () => {
-   const { errors, handleSubmit, onSubmit, step, register, stepSetState, watch, id } = useSignIn()
+   const { errors, handleSubmit, onSubmit, step, register, stepSetState, watch, id, isSubmitting } =
+      useSignIn()
 
    return (
       <Box as="form" onSubmit={handleSubmit(onSubmit)}>
@@ -87,7 +95,7 @@ export const FormComponent = () => {
 
                <Box display="flex" justifyContent="space-between" mt="2.5rem">
                   <Buttons label="Voltar" onClick={() => stepSetState(0)} isBack />
-                  <Buttons label="Acessar" btnSubmit />
+                  <Buttons label="Acessar" btnSubmit isLoading={isSubmitting} />
                </Box>
             </Box>
          )}

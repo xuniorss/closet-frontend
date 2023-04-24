@@ -1,10 +1,12 @@
+import { useAuth } from '@/hooks/useAuth'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useCallback, useEffect, useId, useState } from 'react'
+import { useCallback, useId, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 
 import { schemaSignIn, SignInProps } from '../../validators'
 
 export const useSignIn = () => {
+   const { signIn } = useAuth()
    const [step, setStep] = useState(0)
    const id = useId()
 
@@ -16,6 +18,7 @@ export const useSignIn = () => {
       handleSubmit,
       register,
       watch,
+      reset,
       formState: { isSubmitting, errors },
    } = useForm<SignInProps>({
       criteriaMode: 'all',
@@ -24,10 +27,18 @@ export const useSignIn = () => {
       resolver: zodResolver(schemaSignIn),
    })
 
-   const onSubmit: SubmitHandler<SignInProps> = useCallback((data) => {
-      if (!data) return
-      console.log(data)
-   }, [])
+   const onSubmit: SubmitHandler<SignInProps> = useCallback(
+      async (data) => {
+         if (!data) return
 
-   return { step, stepSetState, register, handleSubmit, errors, onSubmit, watch, id }
+         try {
+            await signIn(data).then(() => reset())
+         } catch (error) {
+            console.log(error)
+         }
+      },
+      [signIn, reset]
+   )
+
+   return { step, stepSetState, register, handleSubmit, errors, onSubmit, watch, id, isSubmitting }
 }
