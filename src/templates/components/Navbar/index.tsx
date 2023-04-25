@@ -28,7 +28,7 @@ export const Navbar = () => {
          zIndex="10"
          bg="white"
       >
-         <Box maxW="78.125rem" w="100%" display="flex" justifyContent="space-between">
+         <Box maxW="78.125rem" w="100%" display="flex" justifyContent="space-between" p={4}>
             <Box display="flex" flexDir="row" gap={5}>
                {NavLink.map((value) => (
                   <Link

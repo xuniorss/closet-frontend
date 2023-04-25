@@ -1,16 +1,15 @@
 import { useAuth } from '@/hooks/useAuth'
-import { usePathname, useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 
-export const useProtectRoute = ({ redirectTo = '/' }: { redirectTo: string }) => {
+export const useProtectRoute = (privateRoute: boolean = true) => {
    const { isAuthenticated } = useAuth()
    const router = useRouter()
-   const path = usePathname()
 
    useEffect(() => {
-      if (!isAuthenticated && path !== '/signin') {
-         router.push(redirectTo)
-      }
+      if (isAuthenticated && !privateRoute) return router.push('/')
+      if (!isAuthenticated && privateRoute) return router.push('/signin')
+
       return () => {}
-   }, [isAuthenticated, path, redirectTo, router])
+   }, [isAuthenticated, privateRoute, router])
 }

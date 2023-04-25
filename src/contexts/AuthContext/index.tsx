@@ -59,6 +59,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
                setCookie(undefined, `${process.env.NEXT_PUBLIC_COOKIES}`, token, {
                   maxAge: 7 * 24 * 60 * 60, // 7 dias
                   path: '/',
+                  sameSite: 'none',
+                  secure: true,
                })
 
                api.defaults.headers['Authorization'] = `Bearer ${token}`
