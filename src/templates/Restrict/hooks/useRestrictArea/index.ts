@@ -8,6 +8,7 @@ import crypto from 'crypto'
 import { ChangeEvent, useCallback, useId } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useQuery } from 'react-query'
+
 import { ProductsProps, schemaProducts } from '../../components/NewCategory/validator'
 import { useProducts } from '../useProducts'
 
@@ -32,12 +33,12 @@ export const useRestrictArea = () => {
       reset,
       control,
       setValue,
-      formState: { isSubmitting },
+      formState: { isSubmitting, errors },
    } = useForm<ProductsProps>({
       criteriaMode: 'all',
       mode: 'all',
       reValidateMode: 'onChange',
-      defaultValues: { product_code: '', product_name: '', price: 0, quantity: 0 },
+      defaultValues: { product_code: '', price: '', product_name: '', quantity: 1 },
       resolver: zodResolver(schemaProducts),
    })
 
@@ -131,5 +132,6 @@ export const useRestrictArea = () => {
       id,
       handleRemoveMedia,
       isSubmitting,
+      errors,
    }
 }

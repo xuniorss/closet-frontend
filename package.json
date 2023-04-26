@@ -25,6 +25,7 @@
       "next": "^13.3.1-canary.19",
       "nookies": "^2.5.2",
       "react": "18.2.0",
+      "react-currency-input-field": "^3.6.10",
       "react-dom": "18.2.0",
       "react-hook-form": "^7.43.9",
       "react-icons": "^4.8.0",

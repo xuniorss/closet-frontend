@@ -1,18 +1,10 @@
-import {
-   Box,
-   Button,
-   FormControl,
-   FormLabel,
-   HStack,
-   Image,
-   Input,
-   Select,
-   Tag,
-   Textarea,
-} from '@chakra-ui/react'
-import { Controller } from 'react-hook-form'
-import { sizes } from '../../constants/sizes'
+import { Box, Button, FormControl, FormLabel, HStack, Image, Input, Tag } from '@chakra-ui/react'
+
 import { useRestrictArea } from '../../hooks/useRestrictArea'
+import { GenerateCod } from './components/GenerateCod'
+import { ChooseImage } from './components/Image'
+import { Description, Price, ProductName, Quantity } from './components/Inputs'
+import { SModel, SSizes } from './components/Selects'
 
 export const ProductForm = () => {
    const {
@@ -22,11 +14,6 @@ export const ProductForm = () => {
       register,
       handleGenereteRandomId,
       control,
-      modelList,
-      mediaUrl,
-      handleMediaChange,
-      id,
-      handleRemoveMedia,
       isSubmitting,
    } = useRestrictArea()
 
@@ -47,167 +34,22 @@ export const ProductForm = () => {
          >
             <Box w="100%" display="flex" flexDir="column" gap={5}>
                <Box w={smallScreen ? '100%' : '30%'}>
-                  <FormControl>
-                     <FormLabel>Gerar código da mercadoria</FormLabel>
-                     <Box display="flex" alignItems="center" justifyContent="center" gap={3}>
-                        <Input
-                           bgColor="#F1F1F1"
-                           color="black"
-                           readOnly
-                           {...register('product_code', { required: true })}
-                        />
-                        <Button
-                           color="white"
-                           type="button"
-                           cursor="pointer"
-                           bgColor="blue.700"
-                           _hover={{ bgColor: 'blue.900' }}
-                           onClick={handleGenereteRandomId}
-                        >
-                           Gerar
-                        </Button>
-                     </Box>
-                  </FormControl>
+                  <GenerateCod
+                     form={{ register }}
+                     handleGenereteRandomId={handleGenereteRandomId}
+                  />
                </Box>
-               <FormControl>
-                  <FormLabel>Nome da mercadoria</FormLabel>
-                  <Input
-                     bgColor="#F1F1F1"
-                     placeholder="Informe o nome da mercadoria"
-                     _placeholder={{ color: '#cfcfcf' }}
-                     size="lg"
-                     userSelect="none"
-                     autoComplete="off"
-                     {...register('product_name', { required: true })}
-                  />
-               </FormControl>
-
-               <FormControl>
-                  <FormLabel>Modelo</FormLabel>
-                  <Controller
-                     control={control}
-                     name="model_id"
-                     render={({ field }) => (
-                        <Select
-                           placeholder="Escolha o modelo"
-                           _placeholder={{ bgColor: '#F1F1F1', color: '#cfcfcf' }}
-                           bgColor="#F1F1F1"
-                           size="lg"
-                           {...field}
-                        >
-                           {modelList &&
-                              modelList.map((value) => (
-                                 <option
-                                    style={{ backgroundColor: '#F1F1F1' }}
-                                    key={value.id}
-                                    value={value.id}
-                                 >
-                                    {value.model_name}
-                                 </option>
-                              ))}
-                        </Select>
-                     )}
-                  />
-               </FormControl>
+               <ProductName form={{ register }} />
+               <SModel control={control} />
 
                <Box display="flex" gap={5} flexDir={smallScreen ? 'column' : 'row'}>
-                  <FormControl>
-                     <FormLabel>Tamanho</FormLabel>
-                     <Controller
-                        control={control}
-                        name="size"
-                        render={({ field }) => (
-                           <Select
-                              placeholder="Escolha o tamanho"
-                              bgColor="#F1F1F1"
-                              size="lg"
-                              {...field}
-                           >
-                              {sizes.map((value) => (
-                                 <option
-                                    style={{ backgroundColor: '#F1F1F1' }}
-                                    key={value.size}
-                                    value={value.size}
-                                 >
-                                    {value.size.toUpperCase()}
-                                 </option>
-                              ))}
-                           </Select>
-                        )}
-                     />
-                  </FormControl>
-
-                  <FormControl>
-                     <FormLabel>Valor</FormLabel>
-                     <Input
-                        bgColor="#F1F1F1"
-                        size="lg"
-                        type="number"
-                        {...register('price', { required: true, valueAsNumber: true })}
-                     />
-                  </FormControl>
-
-                  <FormControl>
-                     <FormLabel>Quantidade</FormLabel>
-                     <Input
-                        bgColor="#F1F1F1"
-                        size="lg"
-                        type="number"
-                        {...register('quantity', { required: true, valueAsNumber: true })}
-                     />
-                  </FormControl>
+                  <SSizes control={control} />
+                  <Price form={{ register }} />
+                  <Quantity form={{ register }} />
                </Box>
-               <FormControl>
-                  <FormLabel>
-                     Descrição <span style={{ color: '#b6b6b6' }}>(opcional)</span>
-                  </FormLabel>
-                  <Textarea
-                     bgColor="#F1F1F1"
-                     size="lg"
-                     {...register('description', { required: true })}
-                  />
-               </FormControl>
+               <Description form={{ register }} />
             </Box>
-            <Box>
-               <HStack>
-                  {!mediaUrl && (
-                     <FormLabel textAlign="center" cursor="pointer" htmlFor={`${id}-prodctimage`}>
-                        Selecionar a imagem
-                     </FormLabel>
-                  )}
-
-                  {mediaUrl && (
-                     <Tag
-                        onClick={handleRemoveMedia}
-                        mb={3}
-                        bgColor="red.500"
-                        cursor="pointer"
-                        role="button"
-                     >
-                        Remover imagem
-                     </Tag>
-                  )}
-               </HStack>
-
-               <Input
-                  id={`${id}-prodctimage`}
-                  type="file"
-                  accept="image/png, image/jpeg"
-                  display="none"
-                  onChange={handleMediaChange}
-               />
-
-               {mediaUrl && (
-                  <Image
-                     src={mediaUrl}
-                     objectFit="cover"
-                     bgColor="gray.200"
-                     w="21rem"
-                     h="21rem"
-                     alt="image"
-                  />
-               )}
-            </Box>
+            <ChooseImage />
          </Box>
          <Box
             mt={smallScreen ? 0 : 5}

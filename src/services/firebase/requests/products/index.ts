@@ -1,18 +1,17 @@
-import {
-   deleteObject,
-   getDownloadURL,
-   getMetadata,
-   listAll,
-   ref,
-   uploadBytes,
-} from 'firebase/storage'
+import crypto from 'crypto'
+import { deleteObject, getDownloadURL, getMetadata, listAll, ref, uploadBytes } from 'firebase/storage'
+
 import { storage } from '../../firebase'
 import { UploadImageProductProps } from './models'
 
 export const uploadImageProductStorate = async ({ file }: UploadImageProductProps) => {
-   const storageRef = ref(storage, `products/${file.lastModified}/${file.name}`)
+   const bytes = crypto.randomBytes(4)
+   const number = bytes.readUInt32BE(0)
+   const cod = number % 100000000
 
-   const listStorageRef = ref(storage, `products/${file.lastModified}`)
+   const storageRef = ref(storage, `products/${cod}/${file.name}`)
+
+   const listStorageRef = ref(storage, `products/${cod}`)
    const files = await listAll(listStorageRef)
 
    if (files.items.length > 0) {
@@ -24,7 +23,7 @@ export const uploadImageProductStorate = async ({ file }: UploadImageProductProp
       }, Promise.resolve(files.items[0]))
 
       if (latestMedia.name === file.name) {
-         const mediaForDeleteRef = ref(storage, `products/${file.lastModified}/${latestMedia.name}`)
+         const mediaForDeleteRef = ref(storage, `products/${cod}/${latestMedia.name}`)
          await deleteObject(mediaForDeleteRef)
       }
    }
@@ -37,7 +36,7 @@ export const uploadImageProductStorate = async ({ file }: UploadImageProductProp
 
    const mediaUrl = await getDownloadURL(storageRef)
    const mediaName = file.name
-   const mediaId = file.lastModified
+   const mediaId = cod
 
    return { mediaName, mediaUrl, mediaId }
 }
