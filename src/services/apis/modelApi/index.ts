@@ -1,4 +1,4 @@
-import { ModelPropsResponse } from '@/models/modelApi'
+import { ModelPropsResponse, ModelsPropsList } from '@/models/modelApi'
 import { api } from '@/services/apiClient'
 import { ModelProps } from '@/templates/Restrict/components/NewCategory/validator'
 
@@ -7,4 +7,9 @@ const createModel = async ({ modelname, description }: ModelProps): Promise<Mode
    return data
 }
 
-export const modelApi = { createModel }
+const models = async (): Promise<ModelsPropsList[]> => {
+   const { data } = await api.get<ModelsPropsList[]>('/models')
+   return data
+}
+
+export const modelApi = { createModel, models }

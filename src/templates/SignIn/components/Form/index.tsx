@@ -12,8 +12,18 @@ import { useSignIn } from '../../hook/useSignIn'
 import { Buttons } from '../Buttons'
 
 export const FormComponent = () => {
-   const { errors, handleSubmit, onSubmit, step, register, stepSetState, watch, id, isSubmitting } =
-      useSignIn()
+   const {
+      errors,
+      handleSubmit,
+      onSubmit,
+      step,
+      register,
+      stepSetState,
+      watch,
+      id,
+      isSubmitting,
+      mobileScreen,
+   } = useSignIn()
 
    return (
       <Box as="form" onSubmit={handleSubmit(onSubmit)}>
@@ -36,7 +46,7 @@ export const FormComponent = () => {
                      _placeholder={{ color: 'black' }}
                      placeholder="Informe o e-mail de cadastro"
                      type="email"
-                     w="29.375rem"
+                     w={mobileScreen ? '18rem' : '29.375rem'}
                      h="4.063rem"
                      fontSize="lg"
                      {...register('email', { required: true })}
@@ -82,7 +92,7 @@ export const FormComponent = () => {
                      _placeholder={{ color: 'black' }}
                      placeholder="Informe a senha de cadastro"
                      type="password"
-                     w="29.375rem"
+                     w={mobileScreen ? '18rem' : '29.375rem'}
                      h="4.063rem"
                      fontSize="lg"
                      {...register('password', { required: true })}

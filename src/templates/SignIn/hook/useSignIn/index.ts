@@ -1,4 +1,5 @@
 import { useAuth } from '@/hooks/useAuth'
+import { useMediaQuery } from '@chakra-ui/react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useCallback, useId, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
@@ -13,6 +14,8 @@ export const useSignIn = () => {
    const stepSetState = useCallback((value: number) => {
       setStep(value)
    }, [])
+
+   const [mobileScreen] = useMediaQuery('(max-width: 550px)')
 
    const {
       handleSubmit,
@@ -40,5 +43,16 @@ export const useSignIn = () => {
       [signIn, reset]
    )
 
-   return { step, stepSetState, register, handleSubmit, errors, onSubmit, watch, id, isSubmitting }
+   return {
+      step,
+      stepSetState,
+      register,
+      handleSubmit,
+      errors,
+      onSubmit,
+      watch,
+      id,
+      isSubmitting,
+      mobileScreen,
+   }
 }

@@ -5,6 +5,8 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { ModelProps, schemaModels } from '../../validator'
 import { modelApi } from '@/services/apis'
+import { useMutation } from 'react-query'
+import { queryClient } from '@/services/queryClient'
 
 type NewModelHook = {
    onClose: () => void
@@ -28,6 +30,12 @@ export const useNewModel = ({ onClose }: NewModelHook) => {
       resolver: zodResolver(schemaModels),
    })
 
+   const { mutate } = useMutation(() => modelApi.models(), {
+      onSuccess: () => {
+         queryClient.invalidateQueries(process.env.NEXT_PUBLIC_ALL_MODELS)
+      },
+   })
+
    const onSubmit: SubmitHandler<ModelProps> = useCallback(
       async (data) => {
          if (!isAuthenticated) return
@@ -37,6 +45,7 @@ export const useNewModel = ({ onClose }: NewModelHook) => {
                const { model_name } = response
 
                reset()
+               mutate()
                toast({
                   title: 'Novo modelo cadastrado',
                   description: `Cadastramos ${model_name} para você 😉`,
@@ -56,7 +65,7 @@ export const useNewModel = ({ onClose }: NewModelHook) => {
             console.error(error)
          }
       },
-      [isAuthenticated, reset, toast]
+      [isAuthenticated, reset, toast, mutate]
    )
 
    const handleCancel = useCallback(() => {
