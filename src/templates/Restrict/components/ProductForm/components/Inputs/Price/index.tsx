@@ -1,10 +1,17 @@
 import { FormControl, FormLabel, Input } from '@chakra-ui/react'
-import { CurrencyInput } from 'input-currency-react'
+
+import dynamic from 'next/dynamic'
 import { Controller } from 'react-hook-form'
 
 import { ControlProps } from '../../../models'
 
 //REFERENCE = https://github.com/ElderLK/input-currency-react
+//dynamic = https://github.com/vercel/next.js/issues/4515
+
+const CurrencyInput = dynamic(
+   () => import('input-currency-react').then((curr) => curr.CurrencyInput),
+   { ssr: false }
+)
 
 export const Price = ({ control }: ControlProps) => {
    return (
