@@ -1,8 +1,7 @@
-import { Box, Button, FormControl, FormLabel, HStack, Image, Input, Tag } from '@chakra-ui/react'
+import { Box, Button, FormLabel, HStack, Image, Input, Tag } from '@chakra-ui/react'
 
 import { useRestrictArea } from '../../hooks/useRestrictArea'
 import { GenerateCod } from './components/GenerateCod'
-import { ChooseImage } from './components/Image'
 import { Description, Price, ProductName, Quantity } from './components/Inputs'
 import { SModel, SSizes } from './components/Selects'
 
@@ -15,6 +14,10 @@ export const ProductForm = () => {
       handleGenereteRandomId,
       control,
       isSubmitting,
+      handleMediaChange,
+      handleRemoveMedia,
+      mediaUrl,
+      id,
    } = useRestrictArea()
 
    return (
@@ -49,7 +52,46 @@ export const ProductForm = () => {
                </Box>
                <Description form={{ register }} />
             </Box>
-            <ChooseImage />
+            <Box>
+               <HStack>
+                  {!mediaUrl && (
+                     <FormLabel textAlign="center" cursor="pointer" htmlFor={`${id}-prodctimage`}>
+                        Selecionar a imagem
+                     </FormLabel>
+                  )}
+
+                  {mediaUrl && (
+                     <Tag
+                        onClick={handleRemoveMedia}
+                        mb={3}
+                        bgColor="red.500"
+                        cursor="pointer"
+                        role="button"
+                     >
+                        Remover imagem
+                     </Tag>
+                  )}
+               </HStack>
+
+               <Input
+                  id={`${id}-prodctimage`}
+                  type="file"
+                  accept="image/png, image/jpeg"
+                  display="none"
+                  onChange={handleMediaChange}
+               />
+
+               {mediaUrl && (
+                  <Image
+                     src={mediaUrl}
+                     objectFit="cover"
+                     bgColor="gray.200"
+                     w="21rem"
+                     h="21rem"
+                     alt="image"
+                  />
+               )}
+            </Box>
          </Box>
          <Box
             mt={smallScreen ? 0 : 5}
