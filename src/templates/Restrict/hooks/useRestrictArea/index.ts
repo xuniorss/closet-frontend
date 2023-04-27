@@ -2,12 +2,13 @@ import { useAuth } from '@/hooks/useAuth'
 import { ModelsPropsList } from '@/models/modelApi'
 import { modelApi, productsApi } from '@/services/apis'
 import { uploadImageProductStorate } from '@/services/firebase/requests/products'
+import { queryClient } from '@/services/queryClient'
 import { useMediaQuery, useToast } from '@chakra-ui/react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import crypto from 'crypto'
 import { ChangeEvent, useCallback, useId } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { useQuery } from 'react-query'
+import { useMutation, useQuery } from 'react-query'
 
 import { ProductsProps, schemaProducts } from '../../components/NewCategory/validator'
 import { useProducts } from '../useProducts'
@@ -27,13 +28,18 @@ export const useRestrictArea = () => {
       enabled: isAuthenticated,
    })
 
+   const { mutate } = useMutation(() => productsApi.list(), {
+      onSuccess: () => {
+         queryClient.invalidateQueries(process.env.NEXT_PUBLIC_ALL_PRODUCTS)
+      },
+   })
+
    const {
       handleSubmit,
       register,
       reset,
       control,
       setValue,
-      watch,
       formState: { isSubmitting, errors },
    } = useForm<ProductsProps>({
       criteriaMode: 'all',
@@ -60,7 +66,7 @@ export const useRestrictArea = () => {
                }
 
                await productsApi.create(newData)
-               setValue('price', '')
+               mutate()
                reset()
                dispatch({ type: 'UPLOAD_IMAGE', payload: { media: null, mediaUrl: '' } })
 
@@ -82,7 +88,7 @@ export const useRestrictArea = () => {
             console.error(error)
          }
       },
-      [isAuthenticated, state.media, reset, setValue, dispatch, toast]
+      [isAuthenticated, state.media, reset, dispatch, toast, mutate]
    )
 
    const handleGenereteRandomId = useCallback(() => {

@@ -1,3 +1,4 @@
+import { Products } from '@/models/products'
 import { api } from '@/services/apiClient'
 import { ProductsProps } from '@/templates/Restrict/components/NewCategory/validator'
 
@@ -26,4 +27,9 @@ const create = async ({
    return data
 }
 
-export const productsApi = { create }
+const list = async (): Promise<Products[]> => {
+   const { data } = await api.get<Products[]>('/products')
+   return data
+}
+
+export const productsApi = { create, list }
