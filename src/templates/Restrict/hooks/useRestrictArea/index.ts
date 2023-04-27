@@ -33,6 +33,7 @@ export const useRestrictArea = () => {
       reset,
       control,
       setValue,
+      watch,
       formState: { isSubmitting, errors },
    } = useForm<ProductsProps>({
       criteriaMode: 'all',
@@ -59,6 +60,7 @@ export const useRestrictArea = () => {
                }
 
                await productsApi.create(newData)
+               setValue('price', '')
                reset()
                dispatch({ type: 'UPLOAD_IMAGE', payload: { media: null, mediaUrl: '' } })
 
@@ -80,7 +82,7 @@ export const useRestrictArea = () => {
             console.error(error)
          }
       },
-      [isAuthenticated, reset, state.media, dispatch, toast]
+      [isAuthenticated, state.media, reset, setValue, dispatch, toast]
    )
 
    const handleGenereteRandomId = useCallback(() => {

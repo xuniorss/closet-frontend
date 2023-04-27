@@ -18,19 +18,21 @@
       "@types/react": "18.0.38",
       "@types/react-dom": "18.0.11",
       "axios": "^1.3.6",
+      "encoding": "^0.1.13",
       "eslint": "8.39.0",
       "eslint-config-next": "13.3.0",
       "firebase": "^9.20.0",
       "framer-motion": "^10.12.4",
+      "input-currency-react": "^1.0.1",
       "next": "^13.3.1-canary.19",
       "nookies": "^2.5.2",
       "react": "18.2.0",
-      "react-currency-input-field": "^3.6.10",
       "react-dom": "18.2.0",
       "react-hook-form": "^7.43.9",
       "react-icons": "^4.8.0",
       "react-query": "^3.39.3",
       "typescript": "5.0.4",
       "zod": "^3.21.4"
-   }
+   },
+   "devDependencies": {}
 }

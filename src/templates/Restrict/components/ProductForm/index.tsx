@@ -47,7 +47,7 @@ export const ProductForm = () => {
 
                <Box display="flex" gap={5} flexDir={smallScreen ? 'column' : 'row'}>
                   <SSizes control={control} />
-                  <Price form={{ register }} />
+                  <Price control={control} />
                   <Quantity form={{ register }} />
                </Box>
                <Description form={{ register }} />
