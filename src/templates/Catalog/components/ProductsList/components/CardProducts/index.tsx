@@ -9,14 +9,6 @@ export const CardProducts = ({ value }: { value: Products }) => {
    const { isAuthenticated } = useAuth()
    const router = useRouter()
 
-   const handleWhatsApp = useCallback(() => {
-      const message = `Olá, gostaria de informações sobre o produto ${value.product_name}.`
-
-      const url = `${process.env.NEXT_PUBLIC_WHATSSAPP_MESSAGE_API}${encodeURIComponent(message)}`
-
-      window.open(url)
-   }, [value.product_name])
-
    const handleDetails = useCallback(
       (productName: string, id: string) => {
          const regex = /[^a-zA-Z0-9]/g

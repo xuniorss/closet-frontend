@@ -1,4 +1,5 @@
 import { useAuth } from '@/hooks/useAuth'
+import { useSmallScreen } from '@/hooks/useSmallScreen'
 import { ModelsPropsList } from '@/models/modelApi'
 import { modelApi, productsApi } from '@/services/apis'
 import { uploadImageProductStorate } from '@/services/firebase/requests/products'
@@ -19,7 +20,7 @@ export const useRestrictArea = () => {
    const { isAuthenticated } = useAuth()
    const [state, dispatch] = useProducts({ mediaUrl: '', media: null })
 
-   const [smallScreen] = useMediaQuery('(max-width: 1250px)')
+   const smallScreen = useSmallScreen()
    const toast = useToast()
 
    const { data: modelList } = useQuery<ModelsPropsList[]>({

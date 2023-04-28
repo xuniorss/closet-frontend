@@ -31,9 +31,13 @@
       "react-hook-form": "^7.43.9",
       "react-icons": "^4.8.0",
       "react-query": "^3.39.3",
+      "react-slick": "^0.29.0",
       "remove-accents": "^0.4.4",
+      "slick-carousel": "^1.8.1",
       "typescript": "5.0.4",
       "zod": "^3.21.4"
    },
-   "devDependencies": {}
+   "devDependencies": {
+      "@types/react-slick": "^0.23.10"
+   }
 }
