@@ -77,6 +77,7 @@ export const ProductForm = () => {
                   id={`${id}-prodctimage`}
                   type="file"
                   accept="image/png, image/jpeg"
+                  multiple
                   display="none"
                   onChange={handleMediaChange}
                />
