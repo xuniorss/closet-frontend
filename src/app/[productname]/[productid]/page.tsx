@@ -1,4 +1,4 @@
-import { Products } from '@/models/products'
+import { Products, ProductsByIdProps } from '@/models/products'
 import ProductDetailsTemplate from '@/templates/[productname]/[productid]'
 
 export async function generateMetadata({ params }: { params: { productid: string } }) {
@@ -14,10 +14,10 @@ export async function generateMetadata({ params }: { params: { productid: string
       )
 
       if (!res.ok) throw new Error(`Error! status: ${res.status}`)
-      const result: Products = await res.json()
+      const result: ProductsByIdProps = await res.json()
 
       return {
-         title: `Closet | ${result.product_name}`,
+         title: `Closet | ${result.product.product_name}`,
       }
    } catch (error) {
       console.error(error)
@@ -39,7 +39,7 @@ async function getProducById({ params }: { params: { productid: string } }) {
       )
 
       if (!res.ok) throw new Error(`Error! status: ${res.status}`)
-      const result: Products = await res.json()
+      const result: ProductsByIdProps = await res.json()
 
       return result
    } catch (error) {
@@ -48,7 +48,7 @@ async function getProducById({ params }: { params: { productid: string } }) {
 }
 
 export default async function ProductDetails({ params }: { params: { productid: string } }) {
-   const products = (await getProducById({ params })) as Products
+   const products = (await getProducById({ params })) as ProductsByIdProps
 
    return <ProductDetailsTemplate products={products} />
 }

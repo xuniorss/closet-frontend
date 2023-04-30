@@ -2,7 +2,7 @@
 
 import { useAuth } from '@/hooks/useAuth'
 import { useSmallScreen } from '@/hooks/useSmallScreen'
-import { Products } from '@/models/products'
+import { Products, ProductsByIdProps } from '@/models/products'
 import {
    Accordion,
    AccordionButton,
@@ -22,7 +22,7 @@ import { FaWhatsapp } from 'react-icons/fa'
 import { Carousel } from './components/Carrousel'
 
 type ProductsRequest = {
-   products: Products
+   products: ProductsByIdProps
 }
 
 export default function ProductDetailsTemplate({ products }: ProductsRequest) {
@@ -30,12 +30,12 @@ export default function ProductDetailsTemplate({ products }: ProductsRequest) {
    const { isAuthenticated } = useAuth()
 
    const handleWhatsApp = useCallback(() => {
-      const message = `Olá, gostaria de informações sobre o produto "${products.product_name}"`
+      const message = `Olá, gostaria de informações sobre o produto "${products.product.product_name}"`
 
       const url = `${process.env.NEXT_PUBLIC_WHATSSAPP_MESSAGE_API}${encodeURIComponent(message)}`
 
       window.open(url)
-   }, [products.product_name])
+   }, [products.product.product_name])
 
    return (
       <Box display="flex" flexDir="column" mt="32" mb={smallScreen ? '36' : '20'}>
@@ -52,7 +52,7 @@ export default function ProductDetailsTemplate({ products }: ProductsRequest) {
                h={{ base: 'auto', lg: '45.625rem' }}
                w={{ base: 'auto', xl: '36.563rem' }}
             >
-               <Carousel urlImage={products.image_url} />
+               <Carousel productImage={products.productImage} />
                <Text textAlign="center" fontSize="sm" color="#c2c2c2">
                   Clique para ampliar a imagem
                </Text>
@@ -74,7 +74,7 @@ export default function ProductDetailsTemplate({ products }: ProductsRequest) {
                   >
                      <Box display="flex" flexDir="column">
                         <Heading textAlign="start" color="#261E1E">
-                           {products.product_name}
+                           {products.product.product_name}
                         </Heading>
                         <Text mt={2}>
                            Vendido por <span style={{ fontWeight: 'bold' }}>Closet</span>
@@ -93,14 +93,30 @@ export default function ProductDetailsTemplate({ products }: ProductsRequest) {
                         {<BsHeart size={25} color="#949494" />}
                      </Tag>
                   </Box>
-                  {isAuthenticated && (
-                     <>
-                        <Divider orientation="horizontal" bgColor="#DDD" />
-                        <Text fontSize="1.875rem" lineHeight="2.813rem" color="#261E1E">
-                           R$ {products.price.replace('.', ',')}
+                  <Box display="flex" flexDir="column" gap={3}>
+                     <Divider orientation="horizontal" bgColor="#DDD" />
+
+                     {products.product.quantity > 0 && (
+                        <Text>
+                           Peça em{' '}
+                           <span style={{ color: 'green', fontWeight: 'bolder' }}>estoque</span>
                         </Text>
-                     </>
-                  )}
+                     )}
+                     {isAuthenticated && (
+                        <>
+                           <Text fontSize="1.875rem" lineHeight="2.813rem" color="#261E1E">
+                              R$ {products.product.price.replace('.', ',')}
+                           </Text>
+                        </>
+                     )}
+
+                     <Text fontWeight="bold">Tamanho</Text>
+                     <Box display="flex" flexDir="row" gap={4}>
+                        {products.productSize.map((size) => (
+                           <Text key={size.id}>{size.size}</Text>
+                        ))}
+                     </Box>
+                  </Box>
                </Box>
                <Box mb={5}>
                   <Button
@@ -126,7 +142,7 @@ export default function ProductDetailsTemplate({ products }: ProductsRequest) {
             </Box>
          </Box>
          <Box mt={10}>
-            {products.description && (
+            {products.product.description && (
                <Accordion allowToggle>
                   <AccordionItem>
                      <h2>
@@ -137,7 +153,7 @@ export default function ProductDetailsTemplate({ products }: ProductsRequest) {
                            <AccordionIcon />
                         </AccordionButton>
                      </h2>
-                     <AccordionPanel pb={4}>{products.description}</AccordionPanel>
+                     <AccordionPanel pb={4}>{products.product.description}</AccordionPanel>
                   </AccordionItem>
                </Accordion>
             )}

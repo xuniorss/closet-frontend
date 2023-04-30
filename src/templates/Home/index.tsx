@@ -23,11 +23,12 @@ export default function HomeTemplate({ productsToday, productsWeek }: DataProps)
       centerPadding: '110px',
       infinite: true,
       speed: 500,
-      slidesToShow: 3,
+      slidesToShow: (productsWeek && productsWeek.length < 3 && productsWeek.length) || 3,
       slidesToScroll: 1,
       arrows: true,
       initialSlide: 0,
       style: { margin: '0 50px' },
+
       responsive: [
          {
             breakpoint: 1000,
@@ -44,6 +45,7 @@ export default function HomeTemplate({ productsToday, productsWeek }: DataProps)
                centerMode: true,
                centerPadding: '105px',
                style: { margin: '0 10px' },
+               variableWidth: true,
             },
          },
          {
@@ -54,10 +56,18 @@ export default function HomeTemplate({ productsToday, productsWeek }: DataProps)
                centerMode: true,
                centerPadding: '2px',
                style: { margin: '0 30px' },
+               variableWidth: true,
             },
          },
       ],
    }
+
+   const uniqueArr = productsToday?.filter(
+      (obj, index, self) =>
+         index === self.findIndex((t) => t.id === obj.id && t.product_name === obj.product_name)
+   )
+   console.log('uniqueArr', uniqueArr)
+   console.log('productsToday', productsToday)
 
    return (
       <Box display="flex" flexDir="column">
