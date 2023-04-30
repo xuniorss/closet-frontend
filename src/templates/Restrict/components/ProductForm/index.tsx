@@ -1,4 +1,4 @@
-import { Box, Button } from '@chakra-ui/react'
+import { Box, Button, Text } from '@chakra-ui/react'
 
 import { useRestrictArea } from '../../hooks/useRestrictArea'
 import { ImagesUpload } from './components/Images'
@@ -13,6 +13,7 @@ export const ProductForm = () => {
       register,
       control,
       isSubmitting,
+      errors,
       handleImagesUpload,
    } = useRestrictArea()
 
@@ -35,14 +36,14 @@ export const ProductForm = () => {
             <Box w="100%" display="flex" flexDir="column" gap={5}>
                <ImagesUpload onUpload={handleImagesUpload} />
 
-               <ProductName form={{ register }} />
+               <ProductName form={{ register }} errors={errors.product_name?.message} />
 
                <Box display="flex" gap={5} flexDir={smallScreen ? 'column' : 'row'}>
-                  <SModel control={control} />
-                  <Price control={control} />
+                  <SModel control={control} errors={errors.model_id?.message} />
+                  <Price control={control} errors={errors.price?.message} />
                   <Quantity form={{ register }} />
                </Box>
-               <SSizes form={{ register }} />
+               <SSizes form={{ register }} errors={errors.size?.message} />
                <Description form={{ register }} />
             </Box>
          </Box>

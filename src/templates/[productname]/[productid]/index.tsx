@@ -2,7 +2,7 @@
 
 import { useAuth } from '@/hooks/useAuth'
 import { useSmallScreen } from '@/hooks/useSmallScreen'
-import { Products, ProductsByIdProps } from '@/models/products'
+import { ProductsByIdProps } from '@/models/products'
 import {
    Accordion,
    AccordionButton,
@@ -27,7 +27,7 @@ type ProductsRequest = {
 
 export default function ProductDetailsTemplate({ products }: ProductsRequest) {
    const smallScreen = useSmallScreen()
-   const { isAuthenticated } = useAuth()
+   const { authAdmin } = useAuth()
 
    const handleWhatsApp = useCallback(() => {
       const message = `Olá, gostaria de informações sobre o produto "${products.product.product_name}"`
@@ -102,7 +102,7 @@ export default function ProductDetailsTemplate({ products }: ProductsRequest) {
                            <span style={{ color: 'green', fontWeight: 'bolder' }}>estoque</span>
                         </Text>
                      )}
-                     {isAuthenticated && (
+                     {authAdmin && (
                         <>
                            <Text fontSize="1.875rem" lineHeight="2.813rem" color="#261E1E">
                               R$ {products.product.price.replace('.', ',')}

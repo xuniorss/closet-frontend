@@ -1,12 +1,13 @@
 import { useAuth } from '@/hooks/useAuth'
+import { modelApi } from '@/services/apis'
+import { queryClient } from '@/services/queryClient'
 import { useToast } from '@chakra-ui/react'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { useCallback, useId } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { ModelProps, schemaModels } from '../../validator'
-import { modelApi } from '@/services/apis'
 import { useMutation } from 'react-query'
-import { queryClient } from '@/services/queryClient'
+
+import { ModelProps, schemaModels } from '../../validator'
 
 type NewModelHook = {
    onClose: () => void
@@ -14,7 +15,7 @@ type NewModelHook = {
 
 export const useNewModel = ({ onClose }: NewModelHook) => {
    const id = useId()
-   const { isAuthenticated } = useAuth()
+   const { authAdmin } = useAuth()
    const toast = useToast()
 
    const {
@@ -38,7 +39,7 @@ export const useNewModel = ({ onClose }: NewModelHook) => {
 
    const onSubmit: SubmitHandler<ModelProps> = useCallback(
       async (data) => {
-         if (!isAuthenticated) return
+         if (!authAdmin) return
 
          try {
             await modelApi.createModel(data).then((response) => {
@@ -65,7 +66,7 @@ export const useNewModel = ({ onClose }: NewModelHook) => {
             console.error(error)
          }
       },
-      [isAuthenticated, reset, toast, mutate]
+      [authAdmin, reset, toast, mutate]
    )
 
    const handleCancel = useCallback(() => {

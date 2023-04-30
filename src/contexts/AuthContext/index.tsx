@@ -15,6 +15,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
    const [state, dispatch] = useUser({ user: null })
    const router = useRouter()
 
+   const authAdmin = !!state.user && state.user.is_adm
+
    useQuery<void>(
       `${process.env.NEXT_PUBLIC_AUTH_USER}`,
       async () => {
@@ -76,7 +78,13 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       [dispatch, router]
    )
 
-   const valueProvider = { user: state.user, isAuthenticated: !!state.user, signOut, signIn }
+   const valueProvider = {
+      user: state.user,
+      isAuthenticated: !!state.user,
+      authAdmin,
+      signOut,
+      signIn,
+   }
 
    return <AuthContext.Provider value={valueProvider}>{children}</AuthContext.Provider>
 }

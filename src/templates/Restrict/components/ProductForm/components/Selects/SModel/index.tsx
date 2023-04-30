@@ -1,10 +1,15 @@
+import { ErrorMessage } from '@/components/FormErrorMessage'
 import { useRestrictArea } from '@/templates/Restrict/hooks/useRestrictArea'
 import { FormControl, FormLabel, Select } from '@chakra-ui/react'
 import { Controller } from 'react-hook-form'
 
 import { ControlProps } from '../../../models'
 
-export const SModel = ({ control }: ControlProps) => {
+type SModelProps = {
+   errors: string | undefined
+} & ControlProps
+
+export const SModel = ({ control, errors }: SModelProps) => {
    const { modelList } = useRestrictArea()
 
    return (
@@ -19,6 +24,7 @@ export const SModel = ({ control }: ControlProps) => {
                   _placeholder={{ bgColor: '#F1F1F1', color: '#cfcfcf' }}
                   bgColor="#F1F1F1"
                   size="lg"
+                  isInvalid={!!errors}
                   {...field}
                >
                   {modelList &&
@@ -34,6 +40,7 @@ export const SModel = ({ control }: ControlProps) => {
                </Select>
             )}
          />
+         {errors && <ErrorMessage message={errors} />}
       </FormControl>
    )
 }

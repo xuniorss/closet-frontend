@@ -1,5 +1,5 @@
+import { ErrorMessage } from '@/components/FormErrorMessage'
 import { FormControl, FormLabel, Input } from '@chakra-ui/react'
-
 import dynamic from 'next/dynamic'
 import { Controller } from 'react-hook-form'
 
@@ -13,9 +13,13 @@ const CurrencyInput = dynamic(
    { ssr: false }
 )
 
-export const Price = ({ control }: ControlProps) => {
+type PriceProps = {
+   errors: string | undefined
+} & ControlProps
+
+export const Price = ({ control, errors }: PriceProps) => {
    return (
-      <FormControl>
+      <FormControl isInvalid={!!errors}>
          <FormLabel>
             Valor <span style={{ color: '#cfcfcf' }}>(R$)</span>
          </FormLabel>
@@ -40,6 +44,7 @@ export const Price = ({ control }: ControlProps) => {
                />
             )}
          />
+         {errors && <ErrorMessage message={errors} />}
       </FormControl>
    )
 }

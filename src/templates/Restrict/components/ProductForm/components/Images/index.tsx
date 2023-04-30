@@ -1,51 +1,14 @@
-import { Box, Button, Stack, Text } from '@chakra-ui/react'
-import { useCallback, useState } from 'react'
-import { useDropzone } from 'react-dropzone'
+import { Box, Button, Image, Stack, Text } from '@chakra-ui/react'
+import { useImagesUpload } from './hook/useImagesUpload'
 
 type Props = {
    onUpload: (files: File[]) => void
 }
 
 export const ImagesUpload = ({ onUpload }: Props) => {
-   const [files, setFiles] = useState<File[]>([])
-
-   const handleDrop = useCallback(
-      (acceptedFiles: File[]) => {
-         setFiles((prevFiles) => [...prevFiles, ...acceptedFiles])
-         onUpload(acceptedFiles)
-      },
-      [onUpload]
-   )
-
-   const { getRootProps, getInputProps } = useDropzone({
-      onDrop: handleDrop,
-      accept: {
-         'image/*': [],
-      },
-      multiple: true,
-      maxFiles: 5,
-      maxSize: 2 * 1024 * 1024, // 2 MB
+   const { getRootProps, getInputProps, files, formatBytes, removeFile } = useImagesUpload({
+      onUpload: onUpload,
    })
-
-   const removeFile = useCallback(
-      (fileToRemove: File) => {
-         setFiles((prevFiles) => prevFiles.filter((file) => file !== fileToRemove))
-         onUpload(files.filter((file) => file !== fileToRemove))
-      },
-      [files, onUpload]
-   )
-
-   const formatBytes = (size: number) => {
-      const units = ['B', 'KB', 'MB', 'GB', 'TB']
-
-      let i = 0
-      while (size >= 1024 && i < units.length - 1) {
-         size /= 1024
-         i++
-      }
-
-      return `${Math.round(size * 100) / 100} ${units[i]}`
-   }
 
    return (
       <Box
@@ -64,12 +27,29 @@ export const ImagesUpload = ({ onUpload }: Props) => {
          </Text>
          <Stack mt={4} spacing={2}>
             {files.map((file) => (
-               <Box key={file.name}>
-                  <Text>{file.name}</Text>
-                  <Text fontSize="sm" color="gray.500">
-                     {formatBytes(file.size)}
-                  </Text>
-                  <Button size="sm" onClick={() => removeFile(file)} mt={2}>
+               <Box
+                  key={file.name}
+                  display="flex"
+                  flexDir="row"
+                  alignItems="center"
+                  justifyContent="space-between"
+               >
+                  <Box display="flex" flexDir="row" gap={3} alignItems="center">
+                     <Box w="5rem" h="5rem">
+                        <Image
+                           objectFit="cover"
+                           w="100%"
+                           h="100%"
+                           alt="image-preview"
+                           src={URL.createObjectURL(file)}
+                        />
+                     </Box>
+                     <Text>{file.name}</Text>
+                     <Text fontSize="sm" color="gray.500">
+                        {formatBytes(file.size)}
+                     </Text>
+                  </Box>
+                  <Button colorScheme="red" size="sm" onClick={() => removeFile(file)} mt={2}>
                      Remover
                   </Button>
                </Box>

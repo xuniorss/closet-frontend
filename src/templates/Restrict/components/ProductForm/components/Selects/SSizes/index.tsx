@@ -1,3 +1,4 @@
+import { ErrorMessage } from '@/components/FormErrorMessage'
 import { useAuth } from '@/hooks/useAuth'
 import { SizePropsRequest } from '@/models/sizes'
 import { sizeApi } from '@/services/apis'
@@ -6,18 +7,22 @@ import { useQuery } from 'react-query'
 
 import { FormProps } from '../../../models'
 
-export const SSizes = ({ form }: FormProps) => {
-   const { isAuthenticated } = useAuth()
+type SSizesProps = {
+   errors: string | undefined
+} & FormProps
+
+export const SSizes = ({ form, errors }: SSizesProps) => {
+   const { authAdmin } = useAuth()
    const { register } = form
 
    const { data: dataSizes } = useQuery<SizePropsRequest[]>({
       queryKey: process.env.NEXT_PUBLIC_ALL_SIZES,
       queryFn: () => sizeApi.index(),
-      enabled: !!isAuthenticated,
+      enabled: !!authAdmin,
    })
 
    return (
-      <FormControl>
+      <FormControl isInvalid={!!errors}>
          <FormLabel>Tamanhos</FormLabel>
          <Stack spacing={[1, 5]} direction={['column', 'row']}>
             <CheckboxGroup>
@@ -38,6 +43,7 @@ export const SSizes = ({ form }: FormProps) => {
                   ))}
             </CheckboxGroup>
          </Stack>
+         {errors && <ErrorMessage message={errors} />}
       </FormControl>
    )
 }

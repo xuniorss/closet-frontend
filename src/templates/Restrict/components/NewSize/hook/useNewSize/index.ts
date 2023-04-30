@@ -6,6 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useCallback, useId } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useMutation } from 'react-query'
+
 import { schemaSizes, SizeProps } from '../../validator'
 
 type NewSizeHook = {
@@ -14,7 +15,7 @@ type NewSizeHook = {
 
 export const useNewSize = ({ onClose }: NewSizeHook) => {
    const id = useId()
-   const { isAuthenticated } = useAuth()
+   const { authAdmin } = useAuth()
    const toast = useToast()
 
    const {
@@ -38,7 +39,7 @@ export const useNewSize = ({ onClose }: NewSizeHook) => {
 
    const onSubmit: SubmitHandler<SizeProps> = useCallback(
       async (data) => {
-         if (!isAuthenticated) return
+         if (!authAdmin) return
 
          try {
             await sizeApi.create(data)
@@ -61,7 +62,7 @@ export const useNewSize = ({ onClose }: NewSizeHook) => {
             console.error(error)
          }
       },
-      [isAuthenticated, mutate, reset, toast]
+      [authAdmin, mutate, reset, toast]
    )
 
    const handleCancel = useCallback(() => {

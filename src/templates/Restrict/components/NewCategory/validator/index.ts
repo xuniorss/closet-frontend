@@ -20,12 +20,18 @@ export const schemaProducts = z
          .string()
          .min(1, { message: 'O nome da mercadoria deve ser informado' })
          .max(200, { message: 'Nome não pode ultrapassar 200 caracteres.' }),
-      model_id: z.string().uuid(),
-      size: z.array(z.string()),
+      model_id: z.string().uuid().nonempty({ message: 'Selecione o modelo.' }),
+      size: z
+         .array(z.string().uuid())
+         .min(1, {
+            message: 'Pelo menos um dos tamanhos deve ser selecionado, cadastre caso precise.',
+         }),
       price: z.string(),
       quantity: z.number().positive({ message: 'Quantidade deve ser positiva' }),
       description: z.string().max(500).optional(),
-      image_url: z.array(z.string().url()),
+      image_url: z
+         .array(z.string().url())
+         .min(1, { message: 'Pelo menos uma imagem deve ser selecionada' }),
    })
    .partial()
 

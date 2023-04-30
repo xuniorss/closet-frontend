@@ -1,11 +1,11 @@
 'use client'
 
-import { ReactNode } from 'react'
+import { AuthProvider } from '@/contexts/AuthContext'
+import { queryClient } from '@/services/queryClient'
 import { CacheProvider } from '@chakra-ui/next-js'
 import { ChakraProvider } from '@chakra-ui/react'
-import { AuthProvider } from '@/contexts/AuthContext'
+import { ReactNode } from 'react'
 import { QueryClientProvider } from 'react-query'
-import { queryClient } from '@/services/queryClient'
 import { ReactQueryDevtools } from 'react-query/devtools'
 
 export const Providers = ({ children }: { children: ReactNode }) => {

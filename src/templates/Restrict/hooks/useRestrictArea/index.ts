@@ -17,7 +17,7 @@ export const useRestrictArea = () => {
    const id = useId()
    const [files, setFiles] = useState<File[]>([])
 
-   const { isAuthenticated } = useAuth()
+   const { authAdmin } = useAuth()
    const [state, dispatch] = useProducts({ mediaUrl: '', media: null })
 
    const smallScreen = useSmallScreen()
@@ -26,7 +26,7 @@ export const useRestrictArea = () => {
    const { data: modelList } = useQuery<ModelsPropsList[]>({
       queryKey: process.env.NEXT_PUBLIC_ALL_MODELS,
       queryFn: () => modelApi.models(),
-      enabled: isAuthenticated,
+      enabled: authAdmin,
    })
 
    const { mutate } = useMutation(() => productsApi.list(), {
@@ -39,9 +39,9 @@ export const useRestrictArea = () => {
       handleSubmit,
       register,
       reset,
-      watch,
       control,
       setValue,
+      watch,
       formState: { isSubmitting, errors },
    } = useForm<ProductsProps>({
       criteriaMode: 'all',
@@ -54,7 +54,7 @@ export const useRestrictArea = () => {
    const onSubmitProducts: SubmitHandler<ProductsProps> = useCallback(
       async (data) => {
          try {
-            if (!isAuthenticated || !data) return
+            if (!authAdmin || !data || files.length <= 0) return
 
             await uploadImageProductStorate({ files }).then(async (response) => {
                const mediaUrl = response.map((value) => value.mediaUrl)
@@ -68,6 +68,7 @@ export const useRestrictArea = () => {
                mutate()
                reset()
                setFiles([])
+               setValue('size', [])
             })
 
             toast({
@@ -87,7 +88,7 @@ export const useRestrictArea = () => {
             console.error(error)
          }
       },
-      [isAuthenticated, files, toast, mutate, reset]
+      [authAdmin, files, toast, mutate, reset, setValue]
    )
 
    const handleImagesUpload = useCallback((newFiles: File[]) => {

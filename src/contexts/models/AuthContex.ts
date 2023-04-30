@@ -5,6 +5,7 @@ import { ReactNode } from 'react'
 export type AuthContextData = {
    user: UserProps | null
    isAuthenticated: boolean
+   authAdmin: boolean
    signOut: () => void
    signIn: (credentials: SignInProps) => Promise<void>
 }

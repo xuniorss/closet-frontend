@@ -7,7 +7,7 @@ import { useCallback } from 'react'
 import removeAccents from 'remove-accents'
 
 export const CardProducts = ({ value }: { value: Products }) => {
-   const { isAuthenticated } = useAuth()
+   const { authAdmin } = useAuth()
    const router = useRouter()
    const smallScreen = useSmallScreen()
 
@@ -32,7 +32,7 @@ export const CardProducts = ({ value }: { value: Products }) => {
          cursor="pointer"
          onClick={() => handleDetails(value.product_name, value.id)}
          mb="1rem"
-         as={isAuthenticated ? 'form' : Box}
+         as={authAdmin ? 'form' : Box}
       >
          <Box bgColor="#DDD" borderTopLeftRadius="5px" borderTopRightRadius="5px">
             <Image
@@ -58,7 +58,7 @@ export const CardProducts = ({ value }: { value: Products }) => {
             >
                {value.product_name}
             </Text>
-            {isAuthenticated && (
+            {authAdmin && (
                <Text color="black" mt="0.5rem">
                   R$ {value.price}
                </Text>
