@@ -62,13 +62,6 @@ export default function HomeTemplate({ productsToday, productsWeek }: DataProps)
       ],
    }
 
-   const uniqueArr = productsToday?.filter(
-      (obj, index, self) =>
-         index === self.findIndex((t) => t.id === obj.id && t.product_name === obj.product_name)
-   )
-   console.log('uniqueArr', uniqueArr)
-   console.log('productsToday', productsToday)
-
    return (
       <Box display="flex" flexDir="column">
          <Box mt="2.5rem">
