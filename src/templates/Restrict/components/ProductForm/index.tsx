@@ -1,7 +1,7 @@
-import { Box, Button, FormLabel, HStack, Image, Input, Tag } from '@chakra-ui/react'
+import { Box, Button } from '@chakra-ui/react'
 
 import { useRestrictArea } from '../../hooks/useRestrictArea'
-import { GenerateCod } from './components/GenerateCod'
+import { ImagesUpload } from './components/Images'
 import { Description, Price, ProductName, Quantity } from './components/Inputs'
 import { SModel, SSizes } from './components/Selects'
 
@@ -11,13 +11,9 @@ export const ProductForm = () => {
       onSubmitProducts,
       smallScreen,
       register,
-      handleGenereteRandomId,
       control,
       isSubmitting,
-      handleMediaChange,
-      handleRemoveMedia,
-      mediaUrl,
-      id,
+      handleImagesUpload,
    } = useRestrictArea()
 
    return (
@@ -26,6 +22,7 @@ export const ProductForm = () => {
          flexDir="column"
          mt="10"
          as="form"
+         mb="10"
          onSubmit={handleSubmit(onSubmitProducts)}
       >
          <Box
@@ -36,62 +33,17 @@ export const ProductForm = () => {
             gap={4}
          >
             <Box w="100%" display="flex" flexDir="column" gap={5}>
-               <Box w={smallScreen ? '100%' : '30%'}>
-                  <GenerateCod
-                     form={{ register }}
-                     handleGenereteRandomId={handleGenereteRandomId}
-                  />
-               </Box>
+               <ImagesUpload onUpload={handleImagesUpload} />
+
                <ProductName form={{ register }} />
-               <SModel control={control} />
 
                <Box display="flex" gap={5} flexDir={smallScreen ? 'column' : 'row'}>
-                  <SSizes control={control} />
+                  <SModel control={control} />
                   <Price control={control} />
                   <Quantity form={{ register }} />
                </Box>
+               <SSizes form={{ register }} />
                <Description form={{ register }} />
-            </Box>
-            <Box>
-               <HStack>
-                  {!mediaUrl && (
-                     <FormLabel textAlign="center" cursor="pointer" htmlFor={`${id}-prodctimage`}>
-                        Selecionar a imagem
-                     </FormLabel>
-                  )}
-
-                  {mediaUrl && (
-                     <Tag
-                        onClick={handleRemoveMedia}
-                        mb={3}
-                        bgColor="red.500"
-                        cursor="pointer"
-                        role="button"
-                     >
-                        Remover imagem
-                     </Tag>
-                  )}
-               </HStack>
-
-               <Input
-                  id={`${id}-prodctimage`}
-                  type="file"
-                  accept="image/png, image/jpeg"
-                  multiple
-                  display="none"
-                  onChange={handleMediaChange}
-               />
-
-               {mediaUrl && (
-                  <Image
-                     src={mediaUrl}
-                     objectFit="cover"
-                     bgColor="gray.200"
-                     w="21rem"
-                     h="21rem"
-                     alt="image"
-                  />
-               )}
             </Box>
          </Box>
          <Box

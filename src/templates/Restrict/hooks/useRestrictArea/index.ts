@@ -6,8 +6,7 @@ import { uploadImageProductStorate } from '@/services/firebase/requests/products
 import { queryClient } from '@/services/queryClient'
 import { useToast } from '@chakra-ui/react'
 import { zodResolver } from '@hookform/resolvers/zod'
-import crypto from 'crypto'
-import { ChangeEvent, useCallback, useId } from 'react'
+import { useCallback, useId, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useMutation, useQuery } from 'react-query'
 
@@ -16,6 +15,7 @@ import { useProducts } from '../useProducts'
 
 export const useRestrictArea = () => {
    const id = useId()
+   const [files, setFiles] = useState<File[]>([])
 
    const { isAuthenticated } = useAuth()
    const [state, dispatch] = useProducts({ mediaUrl: '', media: null })
@@ -39,6 +39,7 @@ export const useRestrictArea = () => {
       handleSubmit,
       register,
       reset,
+      watch,
       control,
       setValue,
       formState: { isSubmitting, errors },
@@ -46,37 +47,34 @@ export const useRestrictArea = () => {
       criteriaMode: 'all',
       mode: 'all',
       reValidateMode: 'onChange',
-      defaultValues: { product_code: '', price: '', product_name: '', quantity: 1 },
+      defaultValues: { price: '', size: [], product_name: '', quantity: 1 },
       resolver: zodResolver(schemaProducts),
    })
 
    const onSubmitProducts: SubmitHandler<ProductsProps> = useCallback(
       async (data) => {
          try {
-            if (!isAuthenticated) return
+            if (!isAuthenticated || !data) return
 
-            const file = state.media as File
-
-            await uploadImageProductStorate({ file }).then(async (response) => {
-               const { mediaUrl, mediaId } = response
+            await uploadImageProductStorate({ files }).then(async (response) => {
+               const mediaUrl = response.map((value) => value.mediaUrl)
 
                const newData = {
                   image_url: mediaUrl,
-                  image_id: mediaId,
                   ...data,
                }
 
                await productsApi.create(newData)
                mutate()
                reset()
-               dispatch({ type: 'UPLOAD_IMAGE', payload: { media: null, mediaUrl: '' } })
+               setFiles([])
+            })
 
-               toast({
-                  title: 'Uma nova mercadoria foi salva 😍',
-                  status: 'success',
-                  isClosable: true,
-                  position: 'top',
-               })
+            toast({
+               title: 'Uma nova mercadoria foi salva 😍',
+               status: 'success',
+               isClosable: true,
+               position: 'top',
             })
          } catch (error) {
             toast({
@@ -89,58 +87,23 @@ export const useRestrictArea = () => {
             console.error(error)
          }
       },
-      [isAuthenticated, state.media, reset, dispatch, toast, mutate]
+      [isAuthenticated, files, toast, mutate, reset]
    )
 
-   const handleGenereteRandomId = useCallback(() => {
-      const prodbytes = crypto.randomBytes(4)
-      const prodnumber = prodbytes.readUInt32BE(0)
-      const prodcod = prodnumber % 100000000
-
-      const proddigit = crypto.randomBytes(1)
-      const digit = proddigit[0] % 10
-
-      const newProdCod = `${prodcod}-${digit}`
-
-      setValue('product_code', newProdCod)
-   }, [setValue])
-
-   const handleMediaChange = useCallback(
-      (event: ChangeEvent<HTMLInputElement>) => {
-         if (!event.target.files) return
-
-         const media = event.target.files[0]
-         if (!media) return
-
-         if (media.type === 'image/jpeg' || media.type === 'image/png') {
-            dispatch({ type: 'UPLOAD_IMAGE', payload: { media: media } })
-            dispatch({
-               type: 'UPLOAD_IMAGE',
-               payload: { mediaUrl: URL.createObjectURL(event.target.files[0]) },
-            })
-         }
-      },
-      [dispatch]
-   )
-
-   const handleRemoveMedia = useCallback(() => {
-      dispatch({ type: 'UPLOAD_IMAGE', payload: { media: null } })
-      dispatch({ type: 'UPLOAD_IMAGE', payload: { mediaUrl: '' } })
-   }, [dispatch])
+   const handleImagesUpload = useCallback((newFiles: File[]) => {
+      setFiles((prevFiles) => [...prevFiles, ...newFiles])
+   }, [])
 
    return {
       handleSubmit,
       onSubmitProducts,
       smallScreen,
       register,
-      handleGenereteRandomId,
       control,
       modelList,
-      mediaUrl: state.mediaUrl,
-      handleMediaChange,
       id,
-      handleRemoveMedia,
       isSubmitting,
+      handleImagesUpload,
       errors,
    }
 }
