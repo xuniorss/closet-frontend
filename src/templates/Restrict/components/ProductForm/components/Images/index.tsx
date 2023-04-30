@@ -20,7 +20,7 @@ export const ImagesUpload = ({ onUpload }: Props) => {
    const { getRootProps, getInputProps } = useDropzone({
       onDrop: handleDrop,
       accept: {
-         'image/jpeg, image/png': [],
+         'image/*': [],
       },
       multiple: true,
       maxFiles: 5,
