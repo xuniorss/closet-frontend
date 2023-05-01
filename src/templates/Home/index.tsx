@@ -27,6 +27,7 @@ export default function HomeTemplate({ productsToday, productsWeek }: DataProps)
       slidesToScroll: 1,
       arrows: true,
       initialSlide: 0,
+      adaptiveHeight: true,
       style: { margin: '0 50px' },
 
       responsive: [

@@ -1,4 +1,3 @@
-import { ContainerComponent } from '@/templates/components/Container'
 import { Navbar } from '@/templates/components/Navbar'
 import { Rubik } from 'next/font/google'
 
@@ -18,7 +17,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
          >
             <Providers>
                <Navbar />
-               <ContainerComponent>{children}</ContainerComponent>
+               {children}
             </Providers>
          </body>
       </html>
