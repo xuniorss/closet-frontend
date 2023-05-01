@@ -50,7 +50,7 @@ export const useImagesUpload = ({ onUpload }: Props) => {
 
    useEffect(() => {
       return () => files.forEach((file) => URL.revokeObjectURL(URL.createObjectURL(file)))
-   }, [])
+   }, [files])
 
    return { getRootProps, getInputProps, files, formatBytes, removeFile }
 }

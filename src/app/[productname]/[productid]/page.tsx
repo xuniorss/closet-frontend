@@ -1,6 +1,8 @@
 import { ProductsByIdProps } from '@/models/products'
 import ProductDetailsTemplate from '@/templates/[productname]/[productid]'
 
+export const dynamic = 'force-dynamic'
+
 export async function generateMetadata({ params }: { params: { productid: string } }) {
    try {
       const res = await fetch(
