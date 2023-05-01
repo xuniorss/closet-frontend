@@ -5,6 +5,8 @@ import { Providers } from './providers'
 
 const rubik = Rubik({ subsets: ['latin'] })
 
+export const dynamic = 'force-dynamic'
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
    return (
       <html lang="pt-br">

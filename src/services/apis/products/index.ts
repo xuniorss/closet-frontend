@@ -10,6 +10,8 @@ const create = async ({
    quantity,
    description,
    image_url,
+   color,
+   composition,
 }: ProductsProps): Promise<void> => {
    const { data } = await api.post<void>(`/create-product`, {
       product_name,
@@ -19,6 +21,8 @@ const create = async ({
       quantity,
       description,
       image_url,
+      color,
+      composition,
    })
    return data
 }

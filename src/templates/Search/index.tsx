@@ -21,8 +21,6 @@ export default function SearchTemplate() {
       staleTime: 30000,
    })
 
-   console.log(data)
-
    return (
       <Box display="flex" flexDir="column" minH="60vh">
          <Box mt="2.5rem">

@@ -64,7 +64,7 @@ export default function HomeTemplate({ productsToday, productsWeek }: DataProps)
    }
 
    return (
-      <Box display="flex" flexDir="column">
+      <Box display="flex" flexDir="column" minH="calc(100vh - 15rem)">
          <Box mt="2.5rem">
             {productsToday && productsToday.length > 0 && (
                <Box mb="1rem">

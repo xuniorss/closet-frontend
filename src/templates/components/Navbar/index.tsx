@@ -14,14 +14,10 @@ export const Navbar = () => {
 
    const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
       if (defferedSearch.length <= 3) return
-
-      if (event.key === 'Enter') {
-         handleSearch()
-      }
+      if (event.key === 'Enter') handleSearch()
    }
 
    const handleSearch = () => {
-      console.log('Pesquisando por', defferedSearch)
       router.push(`/search?q=${defferedSearch.toLowerCase()}`)
       setSearch('')
    }

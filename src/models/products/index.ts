@@ -28,8 +28,19 @@ type ProductSizesProps = {
    updated_at: Date
 }
 
+type ProductsSpecificationProps = {
+   id: string
+   product_id: string
+   color: string
+   composition: string
+   generic_code: string
+   created_at: Date
+   updated_at: Date
+}
+
 export type ProductsByIdProps = {
    product: Products
    productImage: ProductImageProps[]
    productSize: ProductSizesProps[]
+   productSpec: ProductsSpecificationProps
 }

@@ -6,7 +6,7 @@ import { uploadImageProductStorate } from '@/services/firebase/requests/products
 import { queryClient } from '@/services/queryClient'
 import { useToast } from '@chakra-ui/react'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useCallback, useId, useState } from 'react'
+import { useCallback, useEffect, useId, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useMutation, useQuery } from 'react-query'
 
@@ -47,7 +47,14 @@ export const useRestrictArea = () => {
       criteriaMode: 'all',
       mode: 'all',
       reValidateMode: 'onChange',
-      defaultValues: { price: '', size: [], product_name: '', quantity: 1 },
+      defaultValues: {
+         price: '',
+         size: [],
+         product_name: '',
+         quantity: 1,
+         color: '#000000',
+         composition: '',
+      },
       resolver: zodResolver(schemaProducts),
    })
 

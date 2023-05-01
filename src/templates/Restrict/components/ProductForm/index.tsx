@@ -1,9 +1,10 @@
-import { Box, Button, Text } from '@chakra-ui/react'
+import { Box, Button } from '@chakra-ui/react'
 
 import { useRestrictArea } from '../../hooks/useRestrictArea'
 import { ImagesUpload } from './components/Images'
 import { Description, Price, ProductName, Quantity } from './components/Inputs'
 import { SModel, SSizes } from './components/Selects'
+import { Specifications } from './components/Specifications'
 
 export const ProductForm = () => {
    const {
@@ -45,6 +46,7 @@ export const ProductForm = () => {
                </Box>
                <SSizes form={{ register }} errors={errors.size?.message} />
                <Description form={{ register }} />
+               <Specifications form={{ register }} />
             </Box>
          </Box>
          <Box
@@ -52,6 +54,9 @@ export const ProductForm = () => {
             pos={smallScreen ? 'absolute' : 'relative'}
             right={0}
             top={0}
+            display="flex"
+            flexDir="row"
+            justifyContent="flex-end"
          >
             <Button
                type="submit"

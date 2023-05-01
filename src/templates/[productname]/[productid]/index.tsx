@@ -116,6 +116,14 @@ export default function ProductDetailsTemplate({ products }: ProductsRequest) {
                            <Text key={size.id}>{size.size}</Text>
                         ))}
                      </Box>
+
+                     {products.productSpec && (
+                        <>
+                           <Text color="#b9b9b9">Cor</Text>
+
+                           <Box w="50px" h="50px" bgColor={products.productSpec.color} />
+                        </>
+                     )}
                   </Box>
                </Box>
                <Box mb={5}>
@@ -147,7 +155,7 @@ export default function ProductDetailsTemplate({ products }: ProductsRequest) {
                   <AccordionItem>
                      <h2>
                         <AccordionButton>
-                           <Box as="span" flex="1" textAlign="left">
+                           <Box as="span" flex="1" textAlign="left" fontWeight="bold">
                               Descrição
                            </Box>
                            <AccordionIcon />
@@ -157,6 +165,38 @@ export default function ProductDetailsTemplate({ products }: ProductsRequest) {
                   </AccordionItem>
                </Accordion>
             )}
+
+            {products.productSpec && (
+               <Accordion allowToggle>
+                  <AccordionItem>
+                     <h2>
+                        <AccordionButton>
+                           <Box as="span" flex="1" textAlign="left" fontWeight="bold">
+                              Especificações do produtos
+                           </Box>
+                           <AccordionIcon />
+                        </AccordionButton>
+                     </h2>
+                     <AccordionPanel pb={4}>
+                        <Text color="#949494">
+                           Composição Principal:{' '}
+                           <span style={{ color: 'black' }}>
+                              {products.productSpec.composition}
+                           </span>
+                        </Text>
+                        <Text color="#949494">
+                           Código Genérico:{' '}
+                           <span style={{ color: 'black' }}>
+                              {products.productSpec.generic_code}
+                           </span>
+                        </Text>
+                     </AccordionPanel>
+                  </AccordionItem>
+               </Accordion>
+            )}
+         </Box>
+         <Box>
+            <Text>Alguns outros produtos do modelo, que talvez possa te interessar</Text>
          </Box>
       </Box>
    )
