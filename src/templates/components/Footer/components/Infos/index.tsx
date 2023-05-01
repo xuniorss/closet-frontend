@@ -2,7 +2,7 @@ import { Box, HStack, Text } from '@chakra-ui/react'
 import Link from 'next/link'
 import { BsFillCreditCardFill, BsInstagram } from 'react-icons/bs'
 import { MdOutlinePix } from 'react-icons/md'
-import { FaMoneyBillWave } from 'react-icons/fa'
+import { FaFacebook, FaMoneyBillWave } from 'react-icons/fa'
 
 export const Infos = () => {
    return (
@@ -25,6 +25,9 @@ export const Infos = () => {
             <HStack spacing={5} mt={3}>
                <Link href="https://www.instagram.com/closetguararapes/" target="_blank">
                   <BsInstagram size={25} cursor="pointer" />
+               </Link>
+               <Link href="https://www.facebook.com/lojacloset.guararapes" target="_blank">
+                  <FaFacebook size={25} cursor="pointer" />
                </Link>
             </HStack>
          </Box>

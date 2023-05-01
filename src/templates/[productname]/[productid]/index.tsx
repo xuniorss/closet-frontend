@@ -1,8 +1,9 @@
 'use client'
 
+import { CardProducts } from '@/components/ProductsList/components/CardProducts'
 import { useAuth } from '@/hooks/useAuth'
 import { useSmallScreen } from '@/hooks/useSmallScreen'
-import { ProductsByIdProps } from '@/models/products'
+import { Products, ProductsByIdProps } from '@/models/products'
 import {
    Accordion,
    AccordionButton,
@@ -23,9 +24,15 @@ import { Carousel } from './components/Carrousel'
 
 type ProductsRequest = {
    products: ProductsByIdProps
+   prodRelated: Products[]
+   prodNoRelated: Products[]
 }
 
-export default function ProductDetailsTemplate({ products }: ProductsRequest) {
+export default function ProductDetailsTemplate({
+   products,
+   prodRelated,
+   prodNoRelated,
+}: ProductsRequest) {
    const smallScreen = useSmallScreen()
    const { authAdmin } = useAuth()
 
@@ -195,9 +202,46 @@ export default function ProductDetailsTemplate({ products }: ProductsRequest) {
                </Accordion>
             )}
          </Box>
-         <Box>
-            <Text>Alguns outros produtos do modelo, que talvez possa te interessar</Text>
-         </Box>
+
+         {prodRelated && prodRelated.length > 0 && (
+            <Box display="flex" flexDir="column" justifyContent="center" alignItems="center" mt={8}>
+               <Text fontSize="xl" textAlign="center" textTransform="uppercase" fontWeight="medium">
+                  Alguns outros produtos do modelo, que talvez possa te interessar
+               </Text>
+
+               <Box
+                  display="flex"
+                  flexDir={smallScreen ? 'column' : 'row'}
+                  gap={4}
+                  flexWrap="wrap"
+                  mt={5}
+               >
+                  {prodRelated.map((value) => (
+                     <CardProducts key={value.id} value={value} />
+                  ))}
+               </Box>
+            </Box>
+         )}
+
+         {prodNoRelated && prodNoRelated.length > 0 && (
+            <Box display="flex" flexDir="column" justifyContent="center" alignItems="center" mt={8}>
+               <Text fontSize="xl" textAlign="center" textTransform="uppercase" fontWeight="medium">
+                  Top 3 outros modelos que também podem ser do seu interesse
+               </Text>
+
+               <Box
+                  display="flex"
+                  flexDir={smallScreen ? 'column' : 'row'}
+                  gap={4}
+                  flexWrap="wrap"
+                  mt={5}
+               >
+                  {prodNoRelated.map((value) => (
+                     <CardProducts key={value.id} value={value} />
+                  ))}
+               </Box>
+            </Box>
+         )}
       </Box>
    )
 }
