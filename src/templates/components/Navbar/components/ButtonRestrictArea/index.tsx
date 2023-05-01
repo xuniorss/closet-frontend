@@ -1,5 +1,6 @@
 import { useAuth } from '@/hooks/useAuth'
-import { Tag } from '@chakra-ui/react'
+import { useSmallScreen } from '@/hooks/useSmallScreen'
+import { Button } from '@chakra-ui/react'
 import { usePathname, useRouter } from 'next/navigation'
 import { Fragment, useCallback } from 'react'
 
@@ -7,6 +8,7 @@ export const ButtonRestrictArea = () => {
    const { user, signOut } = useAuth()
    const path = usePathname()
    const router = useRouter()
+   const smallScreen = useSmallScreen()
 
    const onClickButton = useCallback(() => {
       if (user && path === '/restrict') return signOut()
@@ -19,17 +21,18 @@ export const ButtonRestrictArea = () => {
    return (
       <Fragment>
          {path !== '/signin' && (
-            <Tag
+            <Button
                onClick={onClickButton}
                bgColor="#D4BF90"
-               p={2}
+               _hover={{ bgColor: '#bba880' }}
+               p={4}
+               w="auto"
                color="white"
                cursor="pointer"
-               role="button"
             >
-               {path === '/restrict' && 'Desconectar'}
-               {path !== '/restrict' && 'Área restrita'}
-            </Tag>
+               {path === '/restrict' && `${smallScreen ? 'Sair' : 'Desconectar'}`}
+               {path !== '/restrict' && `${smallScreen ? 'Config.' : 'Área restrita'}`}
+            </Button>
          )}
       </Fragment>
    )

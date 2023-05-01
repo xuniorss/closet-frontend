@@ -28,4 +28,9 @@ const list = async (): Promise<Products[]> => {
    return data
 }
 
-export const productsApi = { create, list }
+const search = async (search: string): Promise<Products[]> => {
+   const { data } = await api.get<Products[]>(`/products-qs?q=${search}`)
+   return data
+}
+
+export const productsApi = { create, list, search }

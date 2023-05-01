@@ -1,20 +1,31 @@
 'use client'
 
-import { Box, Flex, Link, Tag } from '@chakra-ui/react'
+import { Box, Flex, Input, Text } from '@chakra-ui/react'
 import NextLink from 'next/link'
+import { usePathname, useRouter } from 'next/navigation'
+import { KeyboardEvent, useDeferredValue, useState } from 'react'
 import { ButtonRestrictArea } from './components/ButtonRestrictArea'
 
-type NavLinkProps = {
-   name: string
-   path: string
-}
-
-const NavLink: Array<NavLinkProps> = [
-   { name: 'Closet', path: '/' },
-   { name: 'Catálogo', path: '/catalog' },
-]
-
 export const Navbar = () => {
+   const [search, setSearch] = useState('')
+   const defferedSearch = useDeferredValue(search)
+   const router = useRouter()
+   const path = usePathname()
+
+   const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
+      if (defferedSearch.length <= 3) return
+
+      if (event.key === 'Enter') {
+         handleSearch()
+      }
+   }
+
+   const handleSearch = () => {
+      console.log('Pesquisando por', defferedSearch)
+      router.push(`/search?q=${defferedSearch.toLowerCase()}`)
+      setSearch('')
+   }
+
    return (
       <Flex
          alignItems="center"
@@ -29,20 +40,34 @@ export const Navbar = () => {
          bg="white"
       >
          <Box maxW="78.125rem" w="100%" display="flex" justifyContent="space-between" p={4}>
-            <Box display="flex" flexDir="row" gap={5}>
-               {NavLink.map((value) => (
-                  <Link
-                     key={value.name}
-                     fontSize={20}
-                     href={value.path}
-                     fontWeight="medium"
-                     as={NextLink}
-                     textDecor="none"
-                  >
-                     {value.name}
-                  </Link>
-               ))}
+            <Box display="flex" alignItems="center" flexDir="row" gap={5}>
+               <NextLink href="/">
+                  <Text fontSize="lg" fontWeight="medium">
+                     Closet
+                  </Text>
+               </NextLink>
             </Box>
+
+            {path !== '/signin' && (
+               <Box
+                  display="flex"
+                  flexDir="row"
+                  alignItems="center"
+                  justifyContent="center"
+                  w="100%"
+               >
+                  <Input
+                     w="50%"
+                     bgColor="#f5f5f5"
+                     type="search"
+                     placeholder="O que você está procurando ?"
+                     _placeholder={{ color: '#b9b9b9' }}
+                     value={search}
+                     onChange={(e) => setSearch(e.target.value)}
+                     onKeyDown={handleKeyDown}
+                  />
+               </Box>
+            )}
 
             <ButtonRestrictArea />
          </Box>
