@@ -8,6 +8,8 @@ import Slider from 'react-slick'
 import 'slick-carousel/slick/slick-theme.css'
 import 'slick-carousel/slick/slick.css'
 import { CardProducts } from '../../components/ProductsList/components/CardProducts'
+import { CustomNextArrow } from '../components/CustomNextArrow'
+import { CustomPrevArrow } from '../components/CustomPrevArrow/inex'
 
 type DataProps = {
    productsToday?: Array<Products>
@@ -78,7 +80,11 @@ export default function HomeTemplate({ productsToday, productsWeek }: DataProps)
                      ACABARAM DE CHEGAR
                   </Text>
 
-                  <Slider {...settings}>
+                  <Slider
+                     {...settings}
+                     nextArrow={<CustomNextArrow />}
+                     prevArrow={<CustomPrevArrow />}
+                  >
                      {productsToday.map((value) => (
                         <Box key={value.id}>
                            <CardProducts value={value} />
@@ -100,7 +106,11 @@ export default function HomeTemplate({ productsToday, productsWeek }: DataProps)
                      NOVIDADES DA SEMANA
                   </Text>
 
-                  <Slider {...settings}>
+                  <Slider
+                     {...settings}
+                     nextArrow={<CustomNextArrow />}
+                     prevArrow={<CustomPrevArrow />}
+                  >
                      {productsWeek.map((value) => (
                         <Box key={value.id}>
                            <CardProducts value={value} />

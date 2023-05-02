@@ -1,6 +1,8 @@
 import { CardProducts } from '@/components/ProductsList/components/CardProducts'
 import { useSmallScreen } from '@/hooks/useSmallScreen'
 import { Products } from '@/models/products'
+import { CustomNextArrow } from '@/templates/components/CustomNextArrow'
+import { CustomPrevArrow } from '@/templates/components/CustomPrevArrow/inex'
 import { Box, BoxProps, Text } from '@chakra-ui/react'
 import { Fragment, useState } from 'react'
 import Slider from 'react-slick'
@@ -13,48 +15,6 @@ interface ArrowProps extends BoxProps {
 
 export const ProdRelated = ({ prodRelated }: { prodRelated: Products[] }) => {
    const smallScreen = useSmallScreen()
-
-   const CustomPrevArrow = ({ onClick, currentSlide = 1, slideCount = 1, ...rest }: ArrowProps) => (
-      <Box
-         as="button"
-         onClick={onClick}
-         {...rest}
-         className={
-            'slick-next slick-arrow' + (currentSlide === slideCount - 1 ? ' slick-disabled' : '')
-         }
-         aria-hidden="true"
-         aria-disabled={currentSlide === slideCount - 1 ? true : false}
-         css={{
-            '&::before': {
-               content: "'\\2190'", // código unicode para o ícone de seta para esquerda
-               color: 'black', // cor personalizada
-               fontSize: '24px',
-               backgroundColor: 'black',
-            },
-         }}
-      />
-   )
-
-   const CustomNextArrow = ({ onClick, currentSlide = 0, slideCount = 0, ...rest }: ArrowProps) => (
-      <Box
-         as="button"
-         onClick={onClick}
-         {...rest}
-         className={
-            'slick-next slick-arrow' + (currentSlide === slideCount - 1 ? ' slick-disabled' : '')
-         }
-         aria-hidden="true"
-         aria-disabled={currentSlide === slideCount - 1 ? true : false}
-         css={{
-            '&::before': {
-               content: "'\\2192'", // código unicode para o ícone de seta para direita
-               color: 'black', // cor personalizada
-               fontSize: '24px',
-               backgroundColor: 'black',
-            },
-         }}
-      />
-   )
 
    const settings = {
       centerMode: !smallScreen,
