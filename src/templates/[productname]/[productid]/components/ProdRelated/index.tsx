@@ -3,15 +3,9 @@ import { useSmallScreen } from '@/hooks/useSmallScreen'
 import { Products } from '@/models/products'
 import { CustomNextArrow } from '@/templates/components/CustomNextArrow'
 import { CustomPrevArrow } from '@/templates/components/CustomPrevArrow/inex'
-import { Box, BoxProps, Text } from '@chakra-ui/react'
-import { Fragment, useState } from 'react'
+import { Box, Text } from '@chakra-ui/react'
+import { Fragment } from 'react'
 import Slider from 'react-slick'
-
-interface ArrowProps extends BoxProps {
-   onClick?: () => void
-   currentSlide?: number
-   slideCount?: number
-}
 
 export const ProdRelated = ({ prodRelated }: { prodRelated: Products[] }) => {
    const smallScreen = useSmallScreen()

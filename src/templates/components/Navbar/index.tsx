@@ -54,10 +54,10 @@ export const Navbar = () => {
                >
                   <Input
                      w="50%"
-                     bgColor="#f5f5f5"
+                     bgColor="white.500"
                      type="search"
                      placeholder="O que você está procurando ?"
-                     _placeholder={{ color: '#b9b9b9' }}
+                     _placeholder={{ color: 'placeholder.500' }}
                      value={search}
                      onChange={(e) => setSearch(e.target.value)}
                      onKeyDown={handleKeyDown}

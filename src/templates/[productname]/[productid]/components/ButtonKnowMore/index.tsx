@@ -20,9 +20,10 @@ export const ButtonKnowMore = ({ product }: { product: Products }) => {
          <Button
             w="100%"
             height={smallScreen ? '16' : '12'}
-            _hover={{ bgColor: '#008844' }}
-            bgColor="#3BCD41"
+            _hover={{ bgColor: 'green.hover' }}
+            bgColor="green.whatsapp"
             color="white"
+            type="button"
             fontSize="larger"
             fontWeight="bold"
             borderRadius={smallScreen ? 'none' : 'lg'}

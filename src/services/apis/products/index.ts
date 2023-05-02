@@ -12,6 +12,7 @@ const create = async ({
    image_url,
    color,
    composition,
+   mediaId,
 }: ProductsProps): Promise<void> => {
    const { data } = await api.post<void>(`/create-product`, {
       product_name,
@@ -23,6 +24,7 @@ const create = async ({
       image_url,
       color,
       composition,
+      mediaId,
    })
    return data
 }
@@ -37,4 +39,8 @@ const search = async (search: string): Promise<Products[]> => {
    return data
 }
 
-export const productsApi = { create, list, search }
+const deleteProduct = async (productid: string): Promise<void> => {
+   await api.delete<void>(`/delete-product/${productid}`)
+}
+
+export const productsApi = { create, list, search, deleteProduct }

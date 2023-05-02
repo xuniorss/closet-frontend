@@ -15,7 +15,7 @@ async function getProductsToday(): Promise<Products[] | undefined> {
                accept: 'application/json',
             },
             cache: 'no-store',
-            next: { revalidate: 10 },
+            next: { revalidate: 1 },
          }
       )
 
@@ -38,7 +38,7 @@ async function getProductsWeek(): Promise<Products[] | undefined> {
                accept: 'application/json',
             },
             cache: 'no-store',
-            next: { revalidate: 10 },
+            next: { revalidate: 1 },
          }
       )
 

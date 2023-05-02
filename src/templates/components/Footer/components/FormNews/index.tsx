@@ -19,7 +19,7 @@ export const FormNews = () => {
                type="email"
                fontStyle="italic"
                placeholder="Digite aqui seu e-mail"
-               _placeholder={{ color: '#c9c8c8' }}
+               _placeholder={{ color: 'placeholder.500' }}
                variant="flushed"
                autoComplete="off"
                w="20rem"
@@ -28,11 +28,11 @@ export const FormNews = () => {
                textTransform="uppercase"
                color="white"
                fontSize="sm"
-               bgColor="#D4BF90"
+               bgColor="main.500"
                w={smallScreen ? '100%' : 'auto'}
                isDisabled
                cursor="pointer"
-               _hover={{ bgColor: '#bda97d' }}
+               _hover={{ bgColor: 'main.hover' }}
             >
                Cadastrar
             </Button>

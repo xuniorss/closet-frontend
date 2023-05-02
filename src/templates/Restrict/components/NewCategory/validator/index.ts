@@ -35,6 +35,7 @@ export const schemaProducts = z
          .regex(/^#([0-9A-Fa-f]{3}){1,2}$/)
          .optional(),
       composition: z.string().max(50, { message: 'Tamanho máximo atingido.' }).optional(),
+      mediaId: z.number(),
    })
    .partial()
 

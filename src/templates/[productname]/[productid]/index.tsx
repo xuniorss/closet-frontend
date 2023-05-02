@@ -39,8 +39,8 @@ export default function ProductDetailsTemplate({
                h={{ base: 'auto', lg: '45.625rem' }}
                w={{ base: 'auto', xl: '36.563rem' }}
             >
-               <Carousel productImage={products.productImage} />
-               <Text textAlign="center" fontSize="sm" color="#c2c2c2">
+               <Carousel productImage={products?.productImage} />
+               <Text textAlign="center" fontSize="sm" color="gray.500">
                   Clique para ampliar a imagem
                </Text>
             </Box>
@@ -53,17 +53,18 @@ export default function ProductDetailsTemplate({
                pos="relative"
             >
                <InfoProd
-                  product={products.product}
-                  productSize={products.productSize}
-                  productSpec={products.productSpec}
+                  product={products?.product}
+                  productImage={products?.productImage}
+                  productSize={products?.productSize}
+                  productSpec={products?.productSpec}
                />
 
-               <ButtonKnowMore product={products.product} />
+               <ButtonKnowMore product={products?.product} />
             </Box>
          </Box>
          <Box mt={10}>
-            <Description product={products.product} />
-            <ProductSpec productSpec={products.productSpec} />
+            <Description product={products?.product} />
+            <ProductSpec productSpec={products?.productSpec} />
          </Box>
 
          <ProdRelated prodRelated={prodRelated} />

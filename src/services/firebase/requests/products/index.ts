@@ -1,5 +1,5 @@
 import crypto from 'crypto'
-import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
+import { deleteObject, getDownloadURL, listAll, ref, uploadBytes } from 'firebase/storage'
 
 import { storage } from '../../firebase'
 import { UploadImageProductProps } from './models'
@@ -22,10 +22,21 @@ export const uploadImageProductStorate = async ({ files }: UploadImageProductPro
       const mediaName = file.name
       const mediaId = cod
 
-      return { mediaUrl }
+      return { mediaUrl, mediaId }
    })
 
    const results = await Promise.all(promises)
 
    return results
+}
+
+export const removeImageProductStorage = async (mediaId: string) => {
+   const storageRef = ref(storage, `products/${mediaId}`)
+   const listResult = await listAll(storageRef)
+
+   try {
+      listResult.items.map(async (fileRef) => await deleteObject(fileRef))
+   } catch (error) {
+      console.error(error)
+   }
 }

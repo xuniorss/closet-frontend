@@ -60,15 +60,20 @@ export const useRestrictArea = () => {
          try {
             if (!authAdmin || !data || files.length <= 0) return
 
+            await new Promise((resolve) => setTimeout(resolve, 1000))
+
             await uploadImageProductStorate({ files }).then(async (response) => {
                const mediaUrl = response.map((value) => value.mediaUrl)
+               const mediaId = response.map((value) => value.mediaId)[0]
 
                const newData = {
                   image_url: mediaUrl,
+                  mediaId,
                   ...data,
                }
 
                await productsApi.create(newData)
+
                mutate()
                filesSteate([])
                reset()

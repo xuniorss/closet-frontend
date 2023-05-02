@@ -29,7 +29,7 @@ export default function SearchTemplate() {
             {data && data.length <= 0 && (
                <Box
                   mt={5}
-                  bgColor="#e9e9e9"
+                  bgColor="white.600"
                   p={4}
                   display="flex"
                   flexDir="row"

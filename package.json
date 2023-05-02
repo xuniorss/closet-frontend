@@ -26,6 +26,7 @@
       "input-currency-react": "^1.0.1",
       "next": "^13.3.1-canary.19",
       "nookies": "^2.5.2",
+      "randomstring": "^1.2.3",
       "react": "18.2.0",
       "react-dom": "18.2.0",
       "react-dropzone": "^14.2.3",
@@ -39,6 +40,7 @@
       "zod": "^3.21.4"
    },
    "devDependencies": {
+      "@types/randomstring": "^1.1.8",
       "@types/react-slick": "^0.23.10"
    }
 }

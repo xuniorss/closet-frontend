@@ -9,7 +9,7 @@ export default function SignInTemplate() {
 
    return (
       <Box display="flex" flexDir="column" textAlign="center" alignItems="center" mt="8.438rem">
-         <Heading color="#D4BF90" fontWeight="semibold">
+         <Heading color="main.500" fontWeight="semibold">
             Informe seus dados e tenha acesso a área restrita.
          </Heading>
 

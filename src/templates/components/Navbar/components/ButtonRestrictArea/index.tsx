@@ -23,8 +23,8 @@ export const ButtonRestrictArea = () => {
          {path !== '/signin' && (
             <Button
                onClick={onClickButton}
-               bgColor="#D4BF90"
-               _hover={{ bgColor: '#bba880' }}
+               bgColor="main.500"
+               _hover={{ bgColor: 'main.hover' }}
                p={4}
                w="auto"
                color="white"

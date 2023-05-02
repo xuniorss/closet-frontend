@@ -34,7 +34,7 @@ export const CardProducts = ({ value }: { value: Products }) => {
          mb="1rem"
          as={authAdmin ? 'form' : Box}
       >
-         <Box bgColor="#DDD" borderTopLeftRadius="5px" borderTopRightRadius="5px">
+         <Box bgColor="card.bg" borderTopLeftRadius="5px" borderTopRightRadius="5px">
             <Image
                src={value.image_url}
                alt="image-prod"
@@ -49,7 +49,7 @@ export const CardProducts = ({ value }: { value: Products }) => {
             <Text
                fontSize="16px"
                lineHeight="24px"
-               color="#464646"
+               color="card.color"
                textAlign="start"
                fontWeight="normal"
                mt="0.5rem"

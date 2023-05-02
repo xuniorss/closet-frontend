@@ -26,7 +26,7 @@ export const Footer = () => {
                   <FormNews />
                </Box>
             </ContainerForm>
-            <Box bgColor="#F6f6f6" w="100%" p={4} mt={5}>
+            <Box bgColor="white.500" w="100%" p={4} mt={5}>
                <ContainerForm>
                   <Infos />
                </ContainerForm>

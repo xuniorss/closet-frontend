@@ -5,7 +5,7 @@ export const Copyright = () => {
 
    return (
       <Box display="flex" flexDir="column" alignItems="center" justifyContent="center" w="inherit">
-         <Text fontSize="sm">
+         <Text fontSize="sm" textAlign="center">
             &copy; Copyright
             {` 2019 - ${currDate.getFullYear()}. Todos os direitos reservados. Loja Closet.`}
          </Text>
