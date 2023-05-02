@@ -19,7 +19,7 @@ export type ProductImageProps = {
    updated_at: Date
 }
 
-type ProductSizesProps = {
+export type ProductSizesProps = {
    id: string
    product_id: string
    size_id: string
@@ -28,7 +28,7 @@ type ProductSizesProps = {
    updated_at: Date
 }
 
-type ProductsSpecificationProps = {
+export type ProductsSpecificationProps = {
    id: string
    product_id: string
    color: string

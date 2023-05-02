@@ -1,14 +1,9 @@
 import { Box, Button, Image, Stack, Text } from '@chakra-ui/react'
+
 import { useImagesUpload } from './hook/useImagesUpload'
 
-type Props = {
-   onUpload: (files: File[]) => void
-}
-
-export const ImagesUpload = ({ onUpload }: Props) => {
-   const { getRootProps, getInputProps, files, formatBytes, removeFile } = useImagesUpload({
-      onUpload: onUpload,
-   })
+export const ImagesUpload = () => {
+   const { getRootProps, getInputProps, files, formatBytes, removeFile } = useImagesUpload()
 
    return (
       <Box

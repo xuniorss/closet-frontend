@@ -9,6 +9,7 @@ import {
    FormLabel,
    Input,
 } from '@chakra-ui/react'
+
 import { FormProps } from '../../models'
 
 export const Specifications = ({ form }: FormProps) => {
@@ -35,7 +36,7 @@ export const Specifications = ({ form }: FormProps) => {
                      borderRadius="lg"
                      size="lg"
                      type="color"
-                     defaultValue="#000000"
+                     defaultValue="#000001"
                      {...register('color')}
                   />
                </FormControl>

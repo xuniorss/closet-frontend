@@ -7,16 +7,8 @@ import { SModel, SSizes } from './components/Selects'
 import { Specifications } from './components/Specifications'
 
 export const ProductForm = () => {
-   const {
-      handleSubmit,
-      onSubmitProducts,
-      smallScreen,
-      register,
-      control,
-      isSubmitting,
-      errors,
-      handleImagesUpload,
-   } = useRestrictArea()
+   const { handleSubmit, onSubmitProducts, smallScreen, register, control, isSubmitting, errors } =
+      useRestrictArea()
 
    return (
       <Box
@@ -35,7 +27,7 @@ export const ProductForm = () => {
             gap={4}
          >
             <Box w="100%" display="flex" flexDir="column" gap={5}>
-               <ImagesUpload onUpload={handleImagesUpload} />
+               <ImagesUpload />
 
                <ProductName form={{ register }} errors={errors.product_name?.message} />
 

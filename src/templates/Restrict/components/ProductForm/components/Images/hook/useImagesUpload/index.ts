@@ -1,19 +1,24 @@
+import { useProductsContext } from '@/hooks/useProductsContext'
 import { useCallback, useEffect, useState } from 'react'
 import { useDropzone } from 'react-dropzone'
 
-type Props = {
-   onUpload: (files: File[]) => void
-}
-
-export const useImagesUpload = ({ onUpload }: Props) => {
+export const useImagesUpload = () => {
+   const { filesSteate, files: filesContext } = useProductsContext()
    const [files, setFiles] = useState<File[]>([])
+
+   useEffect(() => {
+      if (filesContext.length <= 0) {
+         setFiles([])
+         return
+      }
+   }, [filesContext.length])
 
    const handleDrop = useCallback(
       (acceptedFiles: File[]) => {
          setFiles((prevFiles) => [...prevFiles, ...acceptedFiles])
-         onUpload(acceptedFiles)
+         filesSteate(acceptedFiles)
       },
-      [onUpload]
+      [filesSteate]
    )
 
    const { getRootProps, getInputProps } = useDropzone({
@@ -31,9 +36,9 @@ export const useImagesUpload = ({ onUpload }: Props) => {
    const removeFile = useCallback(
       (fileToRemove: File) => {
          setFiles((prevFiles) => prevFiles.filter((file) => file !== fileToRemove))
-         onUpload(files.filter((file) => file !== fileToRemove))
+         filesSteate(files.filter((file) => file !== fileToRemove))
       },
-      [files, onUpload]
+      [files, filesSteate]
    )
 
    const formatBytes = (size: number) => {

@@ -1,4 +1,5 @@
 import { useAuth } from '@/hooks/useAuth'
+import { useProductsContext } from '@/hooks/useProductsContext'
 import { useSmallScreen } from '@/hooks/useSmallScreen'
 import { ModelsPropsList } from '@/models/modelApi'
 import { modelApi, productsApi } from '@/services/apis'
@@ -6,19 +7,16 @@ import { uploadImageProductStorate } from '@/services/firebase/requests/products
 import { queryClient } from '@/services/queryClient'
 import { useToast } from '@chakra-ui/react'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useCallback, useEffect, useId, useState } from 'react'
+import { useCallback, useId } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useMutation, useQuery } from 'react-query'
 
 import { ProductsProps, schemaProducts } from '../../components/NewCategory/validator'
-import { useProducts } from '../useProducts'
 
 export const useRestrictArea = () => {
    const id = useId()
-   const [files, setFiles] = useState<File[]>([])
-
+   const { files, filesSteate } = useProductsContext()
    const { authAdmin } = useAuth()
-   const [state, dispatch] = useProducts({ mediaUrl: '', media: null })
 
    const smallScreen = useSmallScreen()
    const toast = useToast()
@@ -41,7 +39,6 @@ export const useRestrictArea = () => {
       reset,
       control,
       setValue,
-      watch,
       formState: { isSubmitting, errors },
    } = useForm<ProductsProps>({
       criteriaMode: 'all',
@@ -52,7 +49,7 @@ export const useRestrictArea = () => {
          size: [],
          product_name: '',
          quantity: 1,
-         color: '#000000',
+         color: '#000001',
          composition: '',
       },
       resolver: zodResolver(schemaProducts),
@@ -73,8 +70,8 @@ export const useRestrictArea = () => {
 
                await productsApi.create(newData)
                mutate()
+               filesSteate([])
                reset()
-               setFiles([])
                setValue('size', [])
             })
 
@@ -95,12 +92,8 @@ export const useRestrictArea = () => {
             console.error(error)
          }
       },
-      [authAdmin, files, toast, mutate, reset, setValue]
+      [authAdmin, files, toast, mutate, filesSteate, reset, setValue]
    )
-
-   const handleImagesUpload = useCallback((newFiles: File[]) => {
-      setFiles((prevFiles) => [...prevFiles, ...newFiles])
-   }, [])
 
    return {
       handleSubmit,
@@ -111,7 +104,6 @@ export const useRestrictArea = () => {
       modelList,
       id,
       isSubmitting,
-      handleImagesUpload,
       errors,
    }
 }
