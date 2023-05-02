@@ -1,4 +1,5 @@
 import { useAuth } from '@/hooks/useAuth'
+import { useSmallScreen } from '@/hooks/useSmallScreen'
 import {
    ProductImageProps,
    Products,
@@ -18,6 +19,7 @@ type InfoProdProps = {
 
 export const InfoProd = ({ product, productImage, productSize, productSpec }: InfoProdProps) => {
    const { authAdmin } = useAuth()
+   const smallScreen = useSmallScreen()
 
    const { isOpen: isOpenRemove, onOpen: onOpenRemove, onClose: onCloseRemove } = useDisclosure()
 
@@ -87,10 +89,14 @@ export const InfoProd = ({ product, productImage, productSize, productSpec }: In
 
                <Box p={4} display="flex" flexDir="row" justifyContent="space-between">
                   <Button colorScheme="red" onClick={onOpenRemove}>
-                     Remover mercadoria
+                     {smallScreen && 'Remover'}
+                     {!smallScreen && 'Remover mercadoria'}
                   </Button>
                   <Button colorScheme="blue">Editar</Button>
-                  <Button colorScheme="orange">Ativar oferta</Button>
+                  <Button colorScheme="orange">
+                     {smallScreen && 'Oferta'}
+                     {!smallScreen && 'Ativar oferta'}
+                  </Button>
                </Box>
             </Box>
          )}
