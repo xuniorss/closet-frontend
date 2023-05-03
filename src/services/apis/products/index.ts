@@ -43,4 +43,9 @@ const deleteProduct = async (productid: string): Promise<void> => {
    await api.delete<void>(`/delete-product/${productid}`)
 }
 
-export const productsApi = { create, list, search, deleteProduct }
+const productsByModel = async (modelid: string): Promise<Products[]> => {
+   const { data } = await api.get<Products[]>(`/collection/${modelid}`)
+   return data
+}
+
+export const productsApi = { create, list, search, deleteProduct, productsByModel }

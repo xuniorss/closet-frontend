@@ -19,6 +19,7 @@ export default function SearchTemplate() {
       queryFn: () => productsApi.search(search),
       cacheTime: 60000,
       staleTime: 30000,
+      enabled: !!search,
    })
 
    return (

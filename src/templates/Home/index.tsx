@@ -1,8 +1,10 @@
 'use client'
 
 import { useSmallScreen } from '@/hooks/useSmallScreen'
+import { ModelsPropsList } from '@/models/modelApi'
 import { Products } from '@/models/products'
 import { Box, Text } from '@chakra-ui/react'
+import { useQuery } from 'react-query'
 import Slider from 'react-slick'
 
 import 'slick-carousel/slick/slick-theme.css'
@@ -12,16 +14,15 @@ import { CustomNextArrow } from '../components/CustomNextArrow'
 import { CustomPrevArrow } from '../components/CustomPrevArrow/inex'
 
 type DataProps = {
-   productsToday?: Array<Products>
    productsWeek?: Array<Products>
 }
 
-export default function HomeTemplate({ productsToday, productsWeek }: DataProps) {
+export default function HomeTemplate({ productsWeek }: DataProps) {
    const smallScreen = useSmallScreen()
 
    const settings = {
       centerMode: !smallScreen,
-      dots: smallScreen,
+      dots: false,
       centerPadding: '110px',
       infinite: true,
       speed: 500,
@@ -64,6 +65,10 @@ export default function HomeTemplate({ productsToday, productsWeek }: DataProps)
          },
       ],
    }
+
+   // const { data } = useQuery<ModelsPropsList[]>({
+
+   // })
 
    return (
       <Box display="flex" flexDir="column" minH="calc(100vh - 15rem)">

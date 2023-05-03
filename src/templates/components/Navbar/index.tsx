@@ -5,16 +5,10 @@ import { modelApi } from '@/services/apis'
 import { Box, Flex, Input, Link, Text, Tooltip } from '@chakra-ui/react'
 import NextLink from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
-import { KeyboardEvent, useDeferredValue, useState } from 'react'
+import { KeyboardEvent, useCallback, useDeferredValue, useState } from 'react'
 import { useQuery } from 'react-query'
 import { ButtonRestrictArea } from './components/ButtonRestrictArea'
 import removeAccents from 'remove-accents'
-
-const subNavLinks = [
-   { label: 'Roupas', href: '/roupas' },
-   { label: 'Calçados', href: '/calcados' },
-   { label: 'Acessórios', href: '/acessorios' },
-]
 
 export const Navbar = () => {
    const [search, setSearch] = useState('')
@@ -27,14 +21,24 @@ export const Navbar = () => {
       if (event.key === 'Enter') handleSearch()
    }
 
-   const handleSearch = () => {
+   const handleSearch = useCallback(() => {
       router.push(`/search?q=${defferedSearch.toLowerCase()}`)
       setSearch('')
-   }
+   }, [defferedSearch, router])
+
+   const handleModelPage = useCallback((modelid: string) => {
+      const modelStorage = localStorage.getItem('model_storage') as string
+
+      if (modelStorage === modelid) return
+
+      localStorage.setItem('model_storage', modelid)
+   }, [])
 
    const { data: models } = useQuery<ModelsPropsList[]>({
       queryKey: process.env.NEXT_PUBLIC_ALL_MODELS,
       queryFn: () => modelApi.models(),
+      cacheTime: 60000,
+      staleTime: 30000,
    })
 
    return (
@@ -109,11 +113,12 @@ export const Navbar = () => {
                                  }
                                  _hover={{ textDecoration: 'none', bg: 'white', color: 'gray.800' }}
                                  href={`/${removeAccents(model_name).toLowerCase()}`}
+                                 onClick={() => handleModelPage(id)}
                               >
                                  <Tooltip
                                     label={`Ir para ${removeAccents(model_name).toLowerCase()}`}
                                  >
-                                    {model_name}
+                                    {model_name.toUpperCase()}
                                  </Tooltip>
                               </Link>
                            ))}
