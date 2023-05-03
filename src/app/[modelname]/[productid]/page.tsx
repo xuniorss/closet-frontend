@@ -1,5 +1,5 @@
 import { Products, ProductsByIdProps } from '@/models/products'
-import ProductDetailsTemplate from '@/templates/[productname]/[productid]'
+import ProductDetailsTemplate from '@/templates/[modelname]/[productid]'
 
 export async function generateMetadata({ params }: { params: { productid: string } }) {
    try {

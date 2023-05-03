@@ -7,7 +7,7 @@ import { uploadImageProductStorate } from '@/services/firebase/requests/products
 import { queryClient } from '@/services/queryClient'
 import { useToast } from '@chakra-ui/react'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useCallback, useEffect, useId, useState } from 'react'
+import { useCallback, useId, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useMutation, useQuery } from 'react-query'
 

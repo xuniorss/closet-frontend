@@ -3,6 +3,7 @@ import { ProductImageProps } from '@/models/products'
 import { Box, Image } from '@chakra-ui/react'
 import { useCallback, useState } from 'react'
 import Slider from 'react-slick'
+
 import 'slick-carousel/slick/slick-theme.css'
 import 'slick-carousel/slick/slick.css'
 
@@ -44,8 +45,9 @@ export const Carousel = ({ productImage }: Images) => {
                            <Image
                               src={image.image_url}
                               cursor="pointer"
-                              w="60px"
-                              h="65px"
+                              objectFit="contain"
+                              w="65px"
+                              h="85px"
                               border={
                                  selectedImage === image.image_url
                                     ? '2px solid #f3dba6'

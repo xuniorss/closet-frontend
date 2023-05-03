@@ -1,5 +1,4 @@
 import { useAuth } from '@/hooks/useAuth'
-import { useSmallScreen } from '@/hooks/useSmallScreen'
 import { Products } from '@/models/products'
 import { Box, Image, Text } from '@chakra-ui/react'
 import { useRouter } from 'next/navigation'
@@ -9,7 +8,6 @@ import removeAccents from 'remove-accents'
 export const CardProducts = ({ value }: { value: Products }) => {
    const { authAdmin } = useAuth()
    const router = useRouter()
-   const smallScreen = useSmallScreen()
 
    const handleDetails = useCallback(
       (productName: string, id: string) => {
@@ -34,13 +32,23 @@ export const CardProducts = ({ value }: { value: Products }) => {
          mb="1rem"
          as={authAdmin ? 'form' : Box}
       >
-         <Box bgColor="card.bg" borderTopLeftRadius="5px" borderTopRightRadius="5px">
+         <Box
+            bgColor="card.bg"
+            borderTopLeftRadius="5px"
+            borderTopRightRadius="5px"
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            bgImage={value.image_url}
+            w="inherit"
+            h="20.938rem"
+         >
             <Image
                src={value.image_url}
                alt="image-prod"
                objectFit="cover"
-               w="inherit"
-               h="20.938rem"
+               w="100%"
+               h="100%"
                borderTopLeftRadius="inherit"
                borderTopRightRadius="inherit"
             />

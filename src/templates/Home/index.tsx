@@ -67,8 +67,8 @@ export default function HomeTemplate({ productsToday, productsWeek }: DataProps)
 
    return (
       <Box display="flex" flexDir="column" minH="calc(100vh - 15rem)">
-         <Box mt="2.5rem">
-            {productsToday && productsToday.length > 0 && (
+         <Box mt="3.5rem">
+            {productsWeek && productsWeek.length > 0 && (
                <Box mb="1rem">
                   <Text
                      textAlign="center"
@@ -77,7 +77,7 @@ export default function HomeTemplate({ productsToday, productsWeek }: DataProps)
                      lineHeight="2.25rem"
                      fontWeight="normal"
                   >
-                     ACABARAM DE CHEGAR
+                     NOVIDADES DA SEMANA
                   </Text>
 
                   <Slider
@@ -85,7 +85,7 @@ export default function HomeTemplate({ productsToday, productsWeek }: DataProps)
                      nextArrow={<CustomNextArrow />}
                      prevArrow={<CustomPrevArrow />}
                   >
-                     {productsToday.map((value) => (
+                     {productsWeek.map((value) => (
                         <Box key={value.id}>
                            <CardProducts value={value} />
                         </Box>
@@ -102,8 +102,9 @@ export default function HomeTemplate({ productsToday, productsWeek }: DataProps)
                      fontSize="1.5rem"
                      lineHeight="2.25rem"
                      fontWeight="normal"
+                     textTransform="uppercase"
                   >
-                     NOVIDADES DA SEMANA
+                     Coleção T-shirts
                   </Text>
 
                   <Slider

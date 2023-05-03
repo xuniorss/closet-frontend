@@ -1,16 +1,12 @@
 import { useAuth } from '@/hooks/useAuth'
 import { useSmallScreen } from '@/hooks/useSmallScreen'
-import {
-   ProductImageProps,
-   Products,
-   ProductSizesProps,
-   ProductsSpecificationProps,
-} from '@/models/products'
+import { ProductImageProps, Products, ProductSizesProps, ProductsSpecificationProps } from '@/models/products'
 import { Box, Button, Divider, Heading, Input, Tag, Text, useDisclosure } from '@chakra-ui/react'
-import { BsHeart } from 'react-icons/bs'
-import { RemoveProducts } from './components/modals/RemoveProducts'
 import { useCallback, useState } from 'react'
+import { BsHeart } from 'react-icons/bs'
+
 import { OthersValues } from './components/modals/OthersValues'
+import { RemoveProducts } from './components/modals/RemoveProducts'
 
 type InfoProdProps = {
    product: Products
@@ -98,7 +94,7 @@ export const InfoProd = ({ product, productImage, productSize, productSpec }: In
                   <>
                      <Text color="gray.550">Cor</Text>
 
-                     <Box w="50px" h="50px" bgColor={productSpec.color} />
+                     <Box w="50px" h="50px" bgColor={productSpec.color} border="1px solid black" />
                   </>
                )}
             </Box>
