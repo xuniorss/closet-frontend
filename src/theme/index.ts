@@ -31,6 +31,9 @@ const colors = {
       bg: '#CCCCCC',
       color: '#464646',
    },
+   modal: {
+      bg: '#111010',
+   },
    title: {
       500: '#261E1E',
    },

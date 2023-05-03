@@ -9,7 +9,8 @@ import {
 import { Box, Button, Divider, Heading, Input, Tag, Text, useDisclosure } from '@chakra-ui/react'
 import { BsHeart } from 'react-icons/bs'
 import { RemoveProducts } from './components/modals/RemoveProducts'
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
+import { OthersValues } from './components/modals/OthersValues'
 
 type InfoProdProps = {
    product: Products
@@ -25,6 +26,7 @@ export const InfoProd = ({ product, productImage, productSize, productSpec }: In
    const smallScreen = useSmallScreen()
 
    const { isOpen: isOpenRemove, onOpen: onOpenRemove, onClose: onCloseRemove } = useDisclosure()
+   const { isOpen: isOpenCalc, onOpen: onOpenCalc, onClose: onCloseCalc } = useDisclosure()
 
    const mediaId = productImage.find((value) => value.product_id === product.id)?.media_id as string
 
@@ -107,10 +109,15 @@ export const InfoProd = ({ product, productImage, productSize, productSpec }: In
                      Ações administrativas
                   </Text>
 
-                  <Box p={4} display="flex" flexDir="row" gap={5}>
+                  <Box
+                     p={4}
+                     display={smallScreen ? 'flex' : 'grid'}
+                     gap={4}
+                     gridTemplateColumns={!smallScreen ? 'repeat(2, 1fr)' : 'repeat(1, 1fr)'}
+                  >
                      {!enableEditing && (
                         <Button colorScheme="red" onClick={onOpenRemove}>
-                           {smallScreen && 'Remover'}
+                           {smallScreen && 'Apagar'}
                            {!smallScreen && 'Remover mercadoria'}
                         </Button>
                      )}
@@ -127,6 +134,12 @@ export const InfoProd = ({ product, productImage, productSize, productSpec }: In
                            {!smallScreen && 'Ativar oferta'}
                         </Button>
                      )}
+                     {!enableEditing && (
+                        <Button colorScheme="purple" onClick={onOpenCalc}>
+                           {smallScreen && 'Cálculo'}
+                           {!smallScreen && 'Cálculo do valor'}
+                        </Button>
+                     )}
                   </Box>
                </Box>
             )}
@@ -137,6 +150,8 @@ export const InfoProd = ({ product, productImage, productSize, productSpec }: In
             isOpenRemove={isOpenRemove}
             onCloseRemove={onCloseRemove}
          />
+
+         <OthersValues price={product.price} isOpenCalc={isOpenCalc} onCloseCalc={onCloseCalc} />
       </>
    )
 }

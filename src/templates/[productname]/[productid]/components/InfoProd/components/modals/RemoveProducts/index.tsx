@@ -98,7 +98,7 @@ export const RemoveProducts = ({
    return (
       <AlertDialog isOpen={isOpenRemove} leastDestructiveRef={cancelRef} onClose={onCloseRemove}>
          <AlertDialogOverlay>
-            <AlertDialogContent bgColor="#111010">
+            <AlertDialogContent bgColor="modal.bg">
                <AlertDialogHeader fontSize="lg" fontWeight="bold" color="white">
                   Remover esta mercadoria
                </AlertDialogHeader>

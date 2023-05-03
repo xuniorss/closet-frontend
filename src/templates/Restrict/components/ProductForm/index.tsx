@@ -1,4 +1,4 @@
-import { Box, Button } from '@chakra-ui/react'
+import { Box, Button, Text } from '@chakra-ui/react'
 
 import { useRestrictArea } from '../../hooks/useRestrictArea'
 import { ImagesUpload } from './components/Images'
@@ -7,8 +7,19 @@ import { SModel, SSizes } from './components/Selects'
 import { Specifications } from './components/Specifications'
 
 export const ProductForm = () => {
-   const { handleSubmit, onSubmitProducts, smallScreen, register, control, isSubmitting, errors } =
-      useRestrictArea()
+   const {
+      handleSubmit,
+      onSubmitProducts,
+      smallScreen,
+      register,
+      control,
+      isSubmitting,
+      errors,
+      debit,
+      handleCalc,
+      creditVista,
+      creditParcel,
+   } = useRestrictArea()
 
    return (
       <Box
@@ -19,6 +30,24 @@ export const ProductForm = () => {
          mb="10"
          onSubmit={handleSubmit(onSubmitProducts)}
       >
+         <Box mb={4} border="2px dashed red" p={4}>
+            <Text>Valores a ser cobrado na maquininha Pag Bank</Text>
+            <Box color="red">
+               <Text>
+                  <span style={{ fontWeight: 'bold' }}>DÉBITO NA HORA</span> (1,99%): R$ {debit}
+               </Text>
+               <Text>
+                  <span style={{ fontWeight: 'bold' }}>CRÉDITO NA HORA À VISTA</span> (4,99%): R${' '}
+                  {creditVista}
+               </Text>
+               <Text>
+                  <span style={{ fontWeight: 'bold' }}>CRÉDITO NA HORA PARCELADO</span> (5,59%): R${' '}
+                  {creditParcel}
+               </Text>
+            </Box>
+
+            <Button onClick={handleCalc}>Calcular</Button>
+         </Box>
          <Box
             display="flex"
             alignItems="center"
