@@ -2,7 +2,7 @@ import { Products } from '@/models/products'
 import HomeTemplate from '@/templates/Home'
 
 export const metadata = {
-   title: 'Página inicial / Closet',
+   title: 'Página inicial | Closet',
 }
 
 async function getProductsWeek(): Promise<Products[] | undefined> {

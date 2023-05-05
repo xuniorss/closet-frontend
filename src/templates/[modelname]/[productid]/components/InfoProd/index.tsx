@@ -1,12 +1,18 @@
 import { useAuth } from '@/hooks/useAuth'
 import { useSmallScreen } from '@/hooks/useSmallScreen'
-import { ProductImageProps, Products, ProductSizesProps, ProductsSpecificationProps } from '@/models/products'
+import {
+   ProductImageProps,
+   Products,
+   ProductSizesProps,
+   ProductsSpecificationProps,
+} from '@/models/products'
 import { Box, Button, Divider, Heading, Input, Tag, Text, useDisclosure } from '@chakra-ui/react'
-import { useCallback, useState } from 'react'
+import { useState } from 'react'
 import { BsHeart } from 'react-icons/bs'
 
 import { OthersValues } from './components/modals/OthersValues'
 import { RemoveProducts } from './components/modals/RemoveProducts'
+import { SaledProducts } from './components/modals/SaledProducts'
 
 type InfoProdProps = {
    product: Products
@@ -23,6 +29,7 @@ export const InfoProd = ({ product, productImage, productSize, productSpec }: In
 
    const { isOpen: isOpenRemove, onOpen: onOpenRemove, onClose: onCloseRemove } = useDisclosure()
    const { isOpen: isOpenCalc, onOpen: onOpenCalc, onClose: onCloseCalc } = useDisclosure()
+   const { isOpen: isOpenSaled, onOpen: onOpenSaled, onClose: onCloseSaled } = useDisclosure()
 
    const mediaId = productImage.find((value) => value.product_id === product.id)?.media_id as string
 
@@ -47,12 +54,17 @@ export const InfoProd = ({ product, productImage, productSize, productSpec }: In
                <Divider orientation="horizontal" bgColor="gray.500" />
 
                <Box display="flex" flexDir="row" alignItems="center" justifyContent="space-between">
-                  {product.quantity > 0 && (
-                     <Text>
-                        Peça em{' '}
-                        <span style={{ color: 'green', fontWeight: 'bolder' }}>estoque</span>
-                     </Text>
-                  )}
+                  <Text>
+                     Peça{' '}
+                     <span
+                        style={{
+                           color: product.quantity <= 0 ? 'red' : 'green',
+                           fontWeight: 'bolder',
+                        }}
+                     >
+                        {product.quantity <= 0 ? 'indisponível' : 'em estoque'}
+                     </span>
+                  </Text>
 
                   {!enableEditing && (
                      <Tag
@@ -75,10 +87,41 @@ export const InfoProd = ({ product, productImage, productSize, productSpec }: In
                   </>
                )}
 
+               {productSpec && productSpec.color !== '#000001' && (
+                  <>
+                     <Text color="gray.550">Cor</Text>
+
+                     <Box
+                        borderRadius="lg"
+                        w="50px"
+                        h="50px"
+                        bgColor={productSpec.color}
+                        border="2px solid black"
+                     />
+                  </>
+               )}
+
                <Text fontWeight="bold">Tamanho</Text>
+
                <Box display="flex" flexDir="row" gap={4}>
                   {productSize.map((size) => (
-                     <Text key={size.id}>{size.size}</Text>
+                     <Box
+                        key={size.id}
+                        bgColor="#f1f1f1"
+                        w="50px"
+                        h="50px"
+                        borderRadius="lg"
+                        border="2px solid black"
+                        display="flex"
+                        alignItems="center"
+                        justifyContent="center"
+                        fontSize="xl"
+                        flexDir="row"
+                        fontWeight="normal"
+                        gap={4}
+                     >
+                        <Text>{size.size}</Text>
+                     </Box>
                   ))}
                </Box>
 
@@ -89,21 +132,33 @@ export const InfoProd = ({ product, productImage, productSize, productSpec }: In
                      {enableEditing && <Input defaultValue={product.quantity} borderColor="blue" />}
                   </Box>
                )}
-
-               {productSpec && productSpec.color !== '#000001' && (
-                  <>
-                     <Text color="gray.550">Cor</Text>
-
-                     <Box w="50px" h="50px" bgColor={productSpec.color} border="1px solid black" />
-                  </>
-               )}
             </Box>
 
             {authAdmin && (
                <Box display="flex" flexDir="column" border="2px dashed red">
-                  <Text fontSize="lg" fontWeight="semibold" ml={4}>
-                     Ações administrativas
-                  </Text>
+                  <Box
+                     display="flex"
+                     flexDir="row"
+                     justifyContent="space-between"
+                     alignItems="center"
+                  >
+                     <Text fontSize="lg" fontWeight="semibold" ml={4}>
+                        {smallScreen ? 'Ações' : 'Ações administrativas'}
+                     </Text>
+
+                     <Box
+                        mr={4}
+                        mt={2}
+                        display="flex"
+                        flexDir="row"
+                        alignItems="center"
+                        justifyContent="center"
+                     >
+                        <Tag cursor="pointer" role="button" onClick={onOpenSaled}>
+                           {smallScreen ? 'Vendida ?' : 'Peça vendida ?'}
+                        </Tag>
+                     </Box>
+                  </Box>
 
                   <Box
                      p={4}
@@ -145,6 +200,12 @@ export const InfoProd = ({ product, productImage, productSize, productSpec }: In
             mediaId={mediaId}
             isOpenRemove={isOpenRemove}
             onCloseRemove={onCloseRemove}
+         />
+
+         <SaledProducts
+            isOpenSaled={isOpenSaled}
+            onCloseSaled={onCloseSaled}
+            productid={product.id}
          />
 
          <OthersValues price={product.price} isOpenCalc={isOpenCalc} onCloseCalc={onCloseCalc} />

@@ -3,22 +3,20 @@
 import { CardProducts } from '@/components/ProductsList/components/CardProducts'
 import { Products } from '@/models/products'
 import { productsApi } from '@/services/apis'
-import { Box, Heading, Text } from '@chakra-ui/react'
-import { useParams } from 'next/navigation'
+import { Box } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 import { useQuery } from 'react-query'
 
 export default function ModelTemplate() {
    const [modelid, setModelId] = useState('')
-   const params = useParams()
 
    useEffect(() => {
-      if (!localStorage.getItem('model_storage')) {
+      if (!localStorage.getItem(`${process.env.NEXT_PUBLIC_MODEL_STORAGE}`)) {
          setModelId('')
          return
       }
 
-      const modelid = localStorage.getItem('model_storage') as string
+      const modelid = localStorage.getItem(`${process.env.NEXT_PUBLIC_MODEL_STORAGE}`) as string
 
       setModelId(modelid)
    }, [])

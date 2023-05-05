@@ -1,7 +1,7 @@
 import SignInTemplate from '@/templates/SignIn'
 
 export const metadata = {
-   title: 'Acessar / Closet',
+   title: 'Acessar | Closet',
 }
 
 export default function SignIn() {

@@ -48,4 +48,8 @@ const productsByModel = async (modelid: string): Promise<Products[]> => {
    return data
 }
 
-export const productsApi = { create, list, search, deleteProduct, productsByModel }
+const saleProduct = async (productid: string): Promise<void> => {
+   await api.patch<void>(`/product-saled/${productid}`)
+}
+
+export const productsApi = { create, list, search, deleteProduct, productsByModel, saleProduct }

@@ -1,20 +1,19 @@
 'use client'
 
-import { ModelsPropsList } from '@/models/modelApi'
-import { modelApi } from '@/services/apis'
-import { Box, Flex, Input, Link, Text, Tooltip } from '@chakra-ui/react'
+import { useSmallScreen } from '@/hooks/useSmallScreen'
+import { Box, Flex, Input, Text } from '@chakra-ui/react'
 import NextLink from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { KeyboardEvent, useCallback, useDeferredValue, useState } from 'react'
-import { useQuery } from 'react-query'
 import { ButtonRestrictArea } from './components/ButtonRestrictArea'
-import removeAccents from 'remove-accents'
+import { SubNavbar } from './components/SubNavbar'
 
 export const Navbar = () => {
    const [search, setSearch] = useState('')
    const defferedSearch = useDeferredValue(search)
    const router = useRouter()
    const path = usePathname()
+   const smallScreen = useSmallScreen()
 
    const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
       if (defferedSearch.length <= 3) return
@@ -25,21 +24,6 @@ export const Navbar = () => {
       router.push(`/search?q=${defferedSearch.toLowerCase()}`)
       setSearch('')
    }, [defferedSearch, router])
-
-   const handleModelPage = useCallback((modelid: string) => {
-      const modelStorage = localStorage.getItem('model_storage') as string
-
-      if (modelStorage === modelid) return
-
-      localStorage.setItem('model_storage', modelid)
-   }, [])
-
-   const { data: models } = useQuery<ModelsPropsList[]>({
-      queryKey: process.env.NEXT_PUBLIC_ALL_MODELS,
-      queryFn: () => modelApi.models(),
-      cacheTime: 60000,
-      staleTime: 30000,
-   })
 
    return (
       <>
@@ -60,7 +44,7 @@ export const Navbar = () => {
                   <Box display="flex" alignItems="center" flexDir="row" gap={5}>
                      <NextLink href="/">
                         <Text fontSize="2xl" fontWeight="medium">
-                           Closet
+                           {smallScreen ? 'C.' : 'Closet'}
                         </Text>
                      </NextLink>
                   </Box>
@@ -88,46 +72,7 @@ export const Navbar = () => {
 
                   <ButtonRestrictArea />
                </Box>
-               {path !== '/signin' && path !== '/restrict' && (
-                  <Box bg="gray.100" w="100%">
-                     <Flex justify="center" align="center" py={2}>
-                        {models &&
-                           models.map(({ id, model_name }) => (
-                              <Link
-                                 key={id}
-                                 mr={4}
-                                 px={2}
-                                 py={1}
-                                 borderRadius="md"
-                                 fontWeight="medium"
-                                 fontSize="sm"
-                                 bg={
-                                    path === `/${removeAccents(model_name).toLowerCase()}`
-                                       ? 'white'
-                                       : 'transparent'
-                                 }
-                                 color={
-                                    path === `/${removeAccents(model_name).toLowerCase()}`
-                                       ? 'gray.800'
-                                       : 'gray.700'
-                                 }
-                                 _hover={{ textDecoration: 'none', bg: 'white', color: 'gray.800' }}
-                                 href={`/${removeAccents(model_name).toLowerCase()}`}
-                                 onClick={() => handleModelPage(id)}
-                              >
-                                 <Tooltip
-                                    label={`Ir para ${removeAccents(model_name).toLowerCase()}`}
-                                 >
-                                    {model_name.toUpperCase()}
-                                 </Tooltip>
-                              </Link>
-                           ))}
-                     </Flex>
-                     {/* <Text textAlign="center" fontSize="xs" color="gray.500">
-                     Frete Grátis em compras acima de R$ 99,00*
-                  </Text> */}
-                  </Box>
-               )}
+               <SubNavbar />
             </Box>
          </Flex>
       </>

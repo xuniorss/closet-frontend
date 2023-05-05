@@ -16,12 +16,13 @@ export const Carousel = ({ productImage }: Images) => {
    const smallScreen = useSmallScreen()
 
    const settings = {
-      dots: !smallScreen,
+      dots: true,
       infinite: true,
       slidesToShow: 1,
       slidesToScroll: 1,
       vertical: smallScreen,
       verticalSwiping: !smallScreen,
+      adaptiveHeight: true,
    }
 
    const handleImageClick = useCallback((imageurl: string) => {
@@ -29,40 +30,39 @@ export const Carousel = ({ productImage }: Images) => {
    }, [])
 
    return (
-      <Box display="flex" h="inherit">
-         <Box w={!smallScreen ? '15%' : '0'}>
+      <Box display="flex" h="inherit" flexDir={smallScreen ? 'column-reverse' : 'row'}>
+         <Box>
             <Slider {...settings}>
-               {!smallScreen && (
-                  <Box>
-                     {productImage.map((image) => (
-                        <Box
-                           key={image.id}
-                           display="flex"
-                           flexDir="column"
-                           alignItems="center"
-                           onClick={() => handleImageClick(image.image_url)}
-                        >
-                           <Image
-                              src={image.image_url}
-                              cursor="pointer"
-                              objectFit="contain"
-                              w="65px"
-                              h="85px"
-                              border={
-                                 selectedImage === image.image_url
-                                    ? '2px solid #f3dba6'
-                                    : '2px solid transparent'
-                              }
-                              borderRadius="5px"
-                              m="5px"
-                              transition="all .2s ease-in-out"
-                              _hover={{ border: '2px solid #D4BF90' }}
-                              alt={`${image.image_url}-image`}
-                           />
-                        </Box>
-                     ))}
-                  </Box>
-               )}
+               {/* {!smallScreen && ( */}
+               <Box>
+                  {productImage.map((image) => (
+                     <Box
+                        key={image.id}
+                        display="flex"
+                        flexDir="row"
+                        alignItems="center"
+                        onClick={() => handleImageClick(image.image_url)}
+                     >
+                        <Image
+                           src={image.image_url}
+                           cursor="pointer"
+                           objectFit="contain"
+                           w="65px"
+                           h="85px"
+                           border={
+                              selectedImage === image.image_url
+                                 ? '2px solid #f3dba6'
+                                 : '2px solid transparent'
+                           }
+                           borderRadius="5px"
+                           m="5px"
+                           transition="all .2s ease-in-out"
+                           _hover={{ border: '2px solid #D4BF90' }}
+                           alt={`${image.image_url}-image`}
+                        />
+                     </Box>
+                  ))}
+               </Box>
             </Slider>
          </Box>
          <Box w="100%" h="inherit" bgColor="#f7f7f7">
