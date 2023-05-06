@@ -1,4 +1,5 @@
 import { useAuth } from '@/hooks/useAuth'
+import { useProductsContext } from '@/hooks/useProductsContext'
 import { useSmallScreen } from '@/hooks/useSmallScreen'
 import {
    ProductImageProps,
@@ -6,7 +7,17 @@ import {
    ProductSizesProps,
    ProductsSpecificationProps,
 } from '@/models/products'
-import { Box, Button, Divider, Heading, Input, Tag, Text, useDisclosure } from '@chakra-ui/react'
+import {
+   Badge,
+   Box,
+   Button,
+   Divider,
+   Heading,
+   Input,
+   Tag,
+   Text,
+   useDisclosure,
+} from '@chakra-ui/react'
 import { useState } from 'react'
 import { BsHeart } from 'react-icons/bs'
 
@@ -23,6 +34,7 @@ type InfoProdProps = {
 
 export const InfoProd = ({ product, productImage, productSize, productSpec }: InfoProdProps) => {
    const [enableEditing, setEnableEditing] = useState(false)
+   const { wishlist, wished } = useProductsContext()
 
    const { authAdmin } = useAuth()
    const smallScreen = useSmallScreen()
@@ -67,16 +79,33 @@ export const InfoProd = ({ product, productImage, productSize, productSpec }: In
                   </Text>
 
                   {!enableEditing && (
-                     <Tag
+                     <Badge
                         display="flex"
                         alignItems="center"
+                        justifyContent="center"
                         cursor="pointer"
                         borderRadius="full"
-                        bgColor="transparent"
-                        _hover={{ bgColor: 'white.550' }}
+                        bgColor={
+                           wished && wished.find((wi) => wi.id === product.id)
+                              ? '#ff6464cf'
+                              : 'transparent'
+                        }
+                        h="45px"
+                        w="45px"
+                        _hover={{ bgColor: '#ff6464cf' }}
+                        onClick={() => wishlist(product, productImage)}
                      >
-                        {<BsHeart size={25} color="gray.700" />}
-                     </Tag>
+                        {
+                           <BsHeart
+                              size={25}
+                              color={
+                                 wished && wished.find((wi) => wi.id === product.id)
+                                    ? 'red'
+                                    : 'black'
+                              }
+                           />
+                        }
+                     </Badge>
                   )}
                </Box>
                {authAdmin && (

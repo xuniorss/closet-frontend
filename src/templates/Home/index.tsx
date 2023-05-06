@@ -1,10 +1,10 @@
 'use client'
 
 import { useSmallScreen } from '@/hooks/useSmallScreen'
-import { ModelsPropsList } from '@/models/modelApi'
+import { CollectionsResponseProps } from '@/models/collections'
 import { Products } from '@/models/products'
 import { Box, Text } from '@chakra-ui/react'
-import { useQuery } from 'react-query'
+import { Fragment } from 'react'
 import Slider from 'react-slick'
 
 import 'slick-carousel/slick/slick-theme.css'
@@ -15,10 +15,13 @@ import { CustomPrevArrow } from '../components/CustomPrevArrow/inex'
 
 type DataProps = {
    productsWeek?: Array<Products>
+   collectionHome?: Array<CollectionsResponseProps>
 }
 
-export default function HomeTemplate({ productsWeek }: DataProps) {
+export default function HomeTemplate({ productsWeek, collectionHome }: DataProps) {
    const smallScreen = useSmallScreen()
+
+   const slidsShow = (productsWeek && productsWeek.length < 3 && productsWeek.length) || 3
 
    const settings = {
       centerMode: !smallScreen,
@@ -26,7 +29,7 @@ export default function HomeTemplate({ productsWeek }: DataProps) {
       centerPadding: '110px',
       infinite: true,
       speed: 500,
-      slidesToShow: (productsWeek && productsWeek.length < 3 && productsWeek.length) || 3,
+      slidesToShow: slidsShow,
       slidesToScroll: 1,
       arrows: true,
       initialSlide: 0,
@@ -66,10 +69,6 @@ export default function HomeTemplate({ productsWeek }: DataProps) {
       ],
    }
 
-   // const { data } = useQuery<ModelsPropsList[]>({
-
-   // })
-
    return (
       <Box display="flex" flexDir="column" minH="calc(100vh - 15rem)">
          <Box mt="3.5rem">
@@ -98,33 +97,33 @@ export default function HomeTemplate({ productsWeek }: DataProps) {
                   </Slider>
                </Box>
             )}
-
-            {productsWeek && productsWeek.length > 0 && (
+            {/*
+            {collectionHome && collectionHome.length > 0 && (
                <Box mb="1rem">
-                  <Text
-                     textAlign="center"
-                     mb="1.5rem"
-                     fontSize="1.5rem"
-                     lineHeight="2.25rem"
-                     fontWeight="normal"
-                     textTransform="uppercase"
-                  >
-                     Coleção T-shirts
-                  </Text>
+                  {collectionHome.map((value) => (
+                     <Fragment key={value.collection_id}>
+                        <Text
+                           textAlign="center"
+                           mb="1.5rem"
+                           fontSize="1.5rem"
+                           lineHeight="2.25rem"
+                           fontWeight="normal"
+                           textTransform="uppercase"
+                        >
+                           {value.collection_name}
+                        </Text>
 
-                  <Slider
-                     {...settings}
-                     nextArrow={<CustomNextArrow />}
-                     prevArrow={<CustomPrevArrow />}
-                  >
-                     {productsWeek.map((value) => (
-                        <Box key={value.id}>
+                        <Slider
+                           {...settings}
+                           nextArrow={<CustomNextArrow />}
+                           prevArrow={<CustomPrevArrow />}
+                        >
                            <CardProducts value={value} />
-                        </Box>
-                     ))}
-                  </Slider>
+                        </Slider>
+                     </Fragment>
+                  ))}
                </Box>
-            )}
+            )} */}
          </Box>
       </Box>
    )

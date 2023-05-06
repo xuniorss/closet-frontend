@@ -6,6 +6,7 @@ import NextLink from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { KeyboardEvent, useCallback, useDeferredValue, useState } from 'react'
 import { ButtonRestrictArea } from './components/ButtonRestrictArea'
+import { ButtonWished } from './components/ButtonWished'
 import { SubNavbar } from './components/SubNavbar'
 
 export const Navbar = () => {
@@ -70,7 +71,10 @@ export const Navbar = () => {
                      </Box>
                   )}
 
-                  <ButtonRestrictArea />
+                  <Box display="flex" flexDir="row" alignItems="center" gap={4}>
+                     <ButtonWished />
+                     {!smallScreen && <ButtonRestrictArea />}
+                  </Box>
                </Box>
                <SubNavbar />
             </Box>
