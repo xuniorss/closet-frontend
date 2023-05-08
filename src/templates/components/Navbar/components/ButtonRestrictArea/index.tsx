@@ -1,22 +1,36 @@
-import { useAuth } from '@/hooks/useAuth'
+import { useStore } from '@/components/useStore'
 import { useSmallScreen } from '@/hooks/useSmallScreen'
+import { useAuthStore } from '@/store/auth'
 import { Button } from '@chakra-ui/react'
 import { usePathname, useRouter } from 'next/navigation'
 import { Fragment, useCallback } from 'react'
 
 export const ButtonRestrictArea = () => {
-   const { user, signOut } = useAuth()
    const path = usePathname()
    const router = useRouter()
    const smallScreen = useSmallScreen()
 
+   const store = useStore(useAuthStore, (state) => state)
+
    const onClickButton = useCallback(() => {
-      if (user && path === '/restrict') return signOut()
+      if (!store) return
 
-      if (user) return router.push('/restrict')
+      if (store.isAuthenticated) {
+         store.signOut()
+         router.push('/')
+         return
+      }
 
-      if (!user && path !== '/restrict') return router.push('/signin')
-   }, [path, router, signOut, user])
+      if (store.authAdmin && path === '/restrict') {
+         store.signOut()
+         router.push('/')
+         return
+      }
+
+      if (store.authAdmin) return router.push('/restrict')
+
+      if (!store.authAdmin && path !== '/restrict') return router.push('/signin')
+   }, [store, path, router])
 
    return (
       <Fragment>
@@ -30,8 +44,15 @@ export const ButtonRestrictArea = () => {
                color="white"
                cursor="pointer"
             >
-               {path === '/restrict' && `${smallScreen ? 'Sair' : 'Desconectar'}`}
-               {path !== '/restrict' && `${smallScreen ? 'Config.' : 'Área restrita'}`}
+               {store && store.isAuthenticated ? 'Sair' : 'Entrar'}
+               {path === '/restrict' &&
+                  store &&
+                  store.authAdmin &&
+                  `${smallScreen ? 'Sair' : 'Desconectar'}`}
+               {path !== '/restrict' &&
+                  store &&
+                  store.authAdmin &&
+                  `${smallScreen ? 'Config.' : 'Área restrita'}`}
             </Button>
          )}
       </Fragment>

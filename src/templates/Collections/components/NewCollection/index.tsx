@@ -1,8 +1,9 @@
-import { useAuth } from '@/hooks/useAuth'
+import { useStore } from '@/components/useStore'
 import { useSmallScreen } from '@/hooks/useSmallScreen'
 import { ModelsPropsList } from '@/models/modelApi'
 import { collectionApi, modelApi } from '@/services/apis'
 import { queryClient } from '@/services/queryClient'
+import { useAuthStore } from '@/store/auth'
 import {
    Box,
    Button,
@@ -24,7 +25,7 @@ import { useMutation, useQuery } from 'react-query'
 import { CollectionProps, schemaCollection } from '../../validators'
 
 export const NewCollection = () => {
-   const { authAdmin } = useAuth()
+   const store = useStore(useAuthStore, (state) => state)
    const [creating, setCreating] = useState(false)
 
    const smallScreen = useSmallScreen()
@@ -33,7 +34,7 @@ export const NewCollection = () => {
    const { data: modelList } = useQuery<ModelsPropsList[]>({
       queryKey: process.env.NEXT_PUBLIC_ALL_MODELS,
       queryFn: () => modelApi.models(),
-      enabled: authAdmin,
+      enabled: store?.authAdmin,
    })
 
    const {
@@ -97,7 +98,7 @@ export const NewCollection = () => {
 
    return (
       <Fragment>
-         {authAdmin && (
+         {store && store.authAdmin && (
             <Box display="flex" flexDir="row" alignItems="center" gap={4}>
                <Button
                   type="button"

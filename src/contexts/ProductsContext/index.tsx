@@ -1,5 +1,6 @@
-import { useAuth } from '@/hooks/useAuth'
+import { useStore } from '@/components/useStore'
 import { ProductImageProps, Products, StorageProps } from '@/models/products'
+import { useAuthStore } from '@/store/auth'
 import { createContext, useCallback, useEffect } from 'react'
 
 import { ProductsContextData, ProductsProviderProps } from '../models/ProductsContext'
@@ -10,7 +11,9 @@ export const ProductsContext = createContext({} as ProductsContextData)
 export const ProductsProvider = ({ children }: ProductsProviderProps) => {
    const [state, dispatch] = useProductReduce({ files: [], wished: [] })
 
-   const { isAuthenticated } = useAuth()
+   const store = useStore(useAuthStore, (state) => state)
+
+   const key = `${process.env.NEXT_PUBLIC_WISHLIST}-${store && store.user?.id}`
 
    const filesSteate = useCallback(
       (files: File[]) => {
@@ -20,54 +23,53 @@ export const ProductsProvider = ({ children }: ProductsProviderProps) => {
    )
 
    useEffect(() => {
-      const getItemStorage = JSON.parse(
-         localStorage.getItem(`${process.env.NEXT_PUBLIC_WISHLIST}`) || '[]'
-      ) as StorageProps[]
+      const getItemStorage = JSON.parse(localStorage.getItem(key) || '[]') as StorageProps[]
 
       dispatch({ type: 'WISHED', payload: { wished: getItemStorage } })
-   }, [dispatch])
 
-   const wishlist = useCallback(
-      (product: Products, productImage: ProductImageProps[]) => {
-         if (!isAuthenticated) return
+      if (!store?.isAuthenticated) {
+         dispatch({ type: 'WISHED', payload: { wished: [] } })
+         return
+      }
+   }, [dispatch, key, store?.isAuthenticated])
 
-         const dataToSave: StorageProps = {
-            ...product,
-            productImage,
-         }
+   // const wishlist = useCallback(
+   //    (product: Products, productImage: ProductImageProps[]) => {
+   //       if (!store?.isAuthenticated) return
 
-         const getItemStorage = JSON.parse(
-            localStorage.getItem(`${process.env.NEXT_PUBLIC_WISHLIST}`) || '[]'
-         ) as StorageProps[]
+   //       const dataToSave: StorageProps = {
+   //          ...product,
+   //          productImage,
+   //       }
 
-         const verify = getItemStorage.find((value) => value.id === product.id)
+   //       const getItemStorage = JSON.parse(localStorage.getItem(key) || '[]') as StorageProps[]
 
-         if (!verify) {
-            const data = [...getItemStorage, dataToSave]
-            localStorage.setItem(`${process.env.NEXT_PUBLIC_WISHLIST}`, JSON.stringify(data))
-            dispatch({ type: 'WISHED', payload: { wished: data } })
-            return
-         }
+   //       const verify = getItemStorage.find((value) => value.id === product.id)
 
-         const idx = getItemStorage.findIndex((value) => value.id === product.id)
-         const removed = getItemStorage.splice(idx, 1)
+   //       if (!verify) {
+   //          const data = [...getItemStorage, dataToSave]
+   //          localStorage.setItem(key, JSON.stringify(data))
+   //          dispatch({ type: 'WISHED', payload: { wished: data } })
+   //          return
+   //       }
 
-         const id = removed.map((value) => value.id)[0]
-         const filtered = getItemStorage.filter((value) => value.id !== id)
+   //       const idx = getItemStorage.findIndex((value) => value.id === product.id)
+   //       const removed = getItemStorage.splice(idx, 1)
 
-         const data = [...filtered]
+   //       const id = removed.map((value) => value.id)[0]
+   //       const filtered = getItemStorage.filter((value) => value.id !== id)
 
-         localStorage.setItem(`${process.env.NEXT_PUBLIC_WISHLIST}`, JSON.stringify(data))
-         dispatch({ type: 'WISHED', payload: { wished: data } })
-      },
-      [dispatch, isAuthenticated]
-   )
+   //       const data = [...filtered]
+
+   //       localStorage.setItem(key, JSON.stringify(data))
+   //       dispatch({ type: 'WISHED', payload: { wished: data } })
+   //    },
+   //    [dispatch, store?.isAuthenticated, key]
+   // )
 
    const valueProvider = {
       files: state.files,
       filesSteate,
-      wishlist,
-      wished: state.wished,
    }
 
    return <ProductsContext.Provider value={valueProvider}>{children}</ProductsContext.Provider>

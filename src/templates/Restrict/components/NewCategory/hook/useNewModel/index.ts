@@ -1,6 +1,7 @@
-import { useAuth } from '@/hooks/useAuth'
+import { useStore } from '@/components/useStore'
 import { modelApi } from '@/services/apis'
 import { queryClient } from '@/services/queryClient'
+import { useAuthStore } from '@/store/auth'
 import { useToast } from '@chakra-ui/react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useCallback, useId } from 'react'
@@ -15,7 +16,7 @@ type NewModelHook = {
 
 export const useNewModel = ({ onClose }: NewModelHook) => {
    const id = useId()
-   const { authAdmin } = useAuth()
+   const store = useStore(useAuthStore, (state) => state)
    const toast = useToast()
 
    const {
@@ -39,7 +40,7 @@ export const useNewModel = ({ onClose }: NewModelHook) => {
 
    const onSubmit: SubmitHandler<ModelProps> = useCallback(
       async (data) => {
-         if (!authAdmin) return
+         if (!store?.authAdmin) return
 
          try {
             await modelApi.createModel(data).then((response) => {
@@ -66,7 +67,7 @@ export const useNewModel = ({ onClose }: NewModelHook) => {
             console.error(error)
          }
       },
-      [authAdmin, reset, toast, mutate]
+      [store?.authAdmin, reset, mutate, toast]
    )
 
    const handleCancel = useCallback(() => {

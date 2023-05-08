@@ -1,6 +1,7 @@
-import { useAuth } from '@/hooks/useAuth'
+import { useStore } from '@/components/useStore'
 import { sizeApi } from '@/services/apis'
 import { queryClient } from '@/services/queryClient'
+import { useAuthStore } from '@/store/auth'
 import { useToast } from '@chakra-ui/react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useCallback, useId } from 'react'
@@ -15,7 +16,7 @@ type NewSizeHook = {
 
 export const useNewSize = ({ onClose }: NewSizeHook) => {
    const id = useId()
-   const { authAdmin } = useAuth()
+   const store = useStore(useAuthStore, (state) => state)
    const toast = useToast()
 
    const {
@@ -39,7 +40,7 @@ export const useNewSize = ({ onClose }: NewSizeHook) => {
 
    const onSubmit: SubmitHandler<SizeProps> = useCallback(
       async (data) => {
-         if (!authAdmin) return
+         if (!store?.authAdmin) return
 
          try {
             await sizeApi.create(data)
@@ -62,7 +63,7 @@ export const useNewSize = ({ onClose }: NewSizeHook) => {
             console.error(error)
          }
       },
-      [authAdmin, mutate, reset, toast]
+      [mutate, reset, store?.authAdmin, toast]
    )
 
    const handleCancel = useCallback(() => {

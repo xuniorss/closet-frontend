@@ -1,12 +1,13 @@
-import { useAuth } from '@/hooks/useAuth'
+import { useStore } from '@/components/useStore'
 import { Products } from '@/models/products'
+import { useAuthStore } from '@/store/auth'
 import { Box, Image, Text } from '@chakra-ui/react'
 import { useRouter } from 'next/navigation'
 import { useCallback } from 'react'
 import removeAccents from 'remove-accents'
 
 export const CardProducts = ({ value }: { value: Products }) => {
-   const { authAdmin } = useAuth()
+   const store = useStore(useAuthStore, (state) => state)
    const router = useRouter()
 
    const handleDetails = useCallback(
@@ -30,7 +31,7 @@ export const CardProducts = ({ value }: { value: Products }) => {
          cursor="pointer"
          onClick={() => handleDetails(value.product_name, value.id)}
          mb="1rem"
-         as={authAdmin ? 'form' : Box}
+         as={store && store.authAdmin ? 'form' : Box}
       >
          <Box
             bgColor="card.bg"
@@ -66,7 +67,7 @@ export const CardProducts = ({ value }: { value: Products }) => {
             >
                {value.product_name}
             </Text>
-            {authAdmin && (
+            {store && store.authAdmin && (
                <Text color="black" mt="0.5rem">
                   R$ {value.price}
                </Text>

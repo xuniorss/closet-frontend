@@ -1,5 +1,4 @@
-import { useAuth } from '@/hooks/useAuth'
-import { useProductsContext } from '@/hooks/useProductsContext'
+import { useStore } from '@/components/useStore'
 import { useSmallScreen } from '@/hooks/useSmallScreen'
 import {
    ProductImageProps,
@@ -7,19 +6,10 @@ import {
    ProductSizesProps,
    ProductsSpecificationProps,
 } from '@/models/products'
-import {
-   Badge,
-   Box,
-   Button,
-   Divider,
-   Heading,
-   Input,
-   Tag,
-   Text,
-   useDisclosure,
-} from '@chakra-ui/react'
+import { useAuthStore } from '@/store/auth'
+import { ButtonAddWishlist } from '@/templates/components/ButtonAddWishlist'
+import { Box, Button, Divider, Heading, Input, Tag, Text, useDisclosure } from '@chakra-ui/react'
 import { useState } from 'react'
-import { BsHeart } from 'react-icons/bs'
 
 import { OthersValues } from './components/modals/OthersValues'
 import { RemoveProducts } from './components/modals/RemoveProducts'
@@ -34,9 +24,8 @@ type InfoProdProps = {
 
 export const InfoProd = ({ product, productImage, productSize, productSpec }: InfoProdProps) => {
    const [enableEditing, setEnableEditing] = useState(false)
-   const { wishlist, wished } = useProductsContext()
 
-   const { authAdmin } = useAuth()
+   const store = useStore(useAuthStore, (state) => state)
    const smallScreen = useSmallScreen()
 
    const { isOpen: isOpenRemove, onOpen: onOpenRemove, onClose: onCloseRemove } = useDisclosure()
@@ -79,36 +68,10 @@ export const InfoProd = ({ product, productImage, productSize, productSpec }: In
                   </Text>
 
                   {!enableEditing && (
-                     <Badge
-                        display="flex"
-                        alignItems="center"
-                        justifyContent="center"
-                        cursor="pointer"
-                        borderRadius="full"
-                        bgColor={
-                           wished && wished.find((wi) => wi.id === product.id)
-                              ? '#ff6464cf'
-                              : 'transparent'
-                        }
-                        h="45px"
-                        w="45px"
-                        _hover={{ bgColor: '#ff6464cf' }}
-                        onClick={() => wishlist(product, productImage)}
-                     >
-                        {
-                           <BsHeart
-                              size={25}
-                              color={
-                                 wished && wished.find((wi) => wi.id === product.id)
-                                    ? 'red'
-                                    : 'black'
-                              }
-                           />
-                        }
-                     </Badge>
+                     <ButtonAddWishlist product={product} productImage={productImage} />
                   )}
                </Box>
-               {authAdmin && (
+               {store && store.authAdmin && (
                   <>
                      <Text fontSize="1.875rem" lineHeight="2.813rem" color="title.500">
                         R$ {product.price.replace('.', ',')}
@@ -154,7 +117,7 @@ export const InfoProd = ({ product, productImage, productSize, productSpec }: In
                   ))}
                </Box>
 
-               {authAdmin && (
+               {store && store.authAdmin && (
                   <Box display="flex" flexDir="row" alignItems="center" gap={4}>
                      <Text fontWeight="bold">Estoque</Text>
                      {!enableEditing && product.quantity}
@@ -163,7 +126,7 @@ export const InfoProd = ({ product, productImage, productSize, productSpec }: In
                )}
             </Box>
 
-            {authAdmin && (
+            {store && store.authAdmin && (
                <Box display="flex" flexDir="column" border="2px dashed red">
                   <Box
                      display="flex"

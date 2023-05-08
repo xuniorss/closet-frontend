@@ -1,15 +1,20 @@
-import { useAuth } from '@/hooks/useAuth'
+import { useStore } from '@/components/useStore'
+import { useAuthStore } from '@/store/auth'
 import { useMediaQuery } from '@chakra-ui/react'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useRouter } from 'next/navigation'
 import { useCallback, useId, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 
 import { schemaSignIn, SignInProps } from '../../validators'
 
 export const useSignIn = () => {
-   const { signIn } = useAuth()
    const [step, setStep] = useState(0)
    const id = useId()
+
+   const store = useStore(useAuthStore, (state) => state)
+
+   const router = useRouter()
 
    const stepSetState = useCallback((value: number) => {
       setStep(value)
@@ -32,15 +37,16 @@ export const useSignIn = () => {
 
    const onSubmit: SubmitHandler<SignInProps> = useCallback(
       async (data) => {
-         if (!data) return
+         if (!data || !store) return
 
          try {
-            await signIn(data).then(() => reset())
+            await store.signIn(data).then(() => reset())
+            router.push('/')
          } catch (error) {
             console.log(error)
          }
       },
-      [signIn, reset]
+      [store, reset, router]
    )
 
    return {
