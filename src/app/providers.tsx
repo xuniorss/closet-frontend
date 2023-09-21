@@ -1,5 +1,6 @@
 'use client'
 
+import { ProductsProvider } from '@/contexts/ProductsContext'
 import { queryClient } from '@/services/queryClient'
 import { theme } from '@/theme'
 import { CacheProvider } from '@chakra-ui/next-js'
@@ -12,9 +13,9 @@ export const Providers = ({ children }: { children: ReactNode }) => {
    return (
       <CacheProvider>
          <QueryClientProvider client={queryClient}>
-            {/* <ProductsProvider> */}
-            <ChakraProvider theme={theme}>{children}</ChakraProvider>
-            {/* </ProductsProvider> */}
+            <ProductsProvider>
+               <ChakraProvider theme={theme}>{children}</ChakraProvider>
+            </ProductsProvider>
             <ReactQueryDevtools initialIsOpen={false} />
          </QueryClientProvider>
       </CacheProvider>

@@ -1,10 +1,13 @@
 'use client'
 
+import { useStore } from '@/components/useStore'
 import { useSmallScreen } from '@/hooks/useSmallScreen'
+import { useAuthStore } from '@/store/auth'
 import { Box, Flex, Input, Text } from '@chakra-ui/react'
 import NextLink from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { KeyboardEvent, useCallback, useDeferredValue, useState } from 'react'
+import { ButtonLogout } from './components/ButtonLogout'
 import { ButtonRestrictArea } from './components/ButtonRestrictArea'
 import { ButtonWished } from './components/ButtonWished'
 import { SubNavbar } from './components/SubNavbar'
@@ -15,6 +18,7 @@ export const Navbar = () => {
    const router = useRouter()
    const path = usePathname()
    const smallScreen = useSmallScreen()
+   const store = useStore(useAuthStore, (state) => state)
 
    const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
       if (defferedSearch.length <= 3) return
@@ -25,6 +29,8 @@ export const Navbar = () => {
       router.push(`/search?q=${defferedSearch.toLowerCase()}`)
       setSearch('')
    }, [defferedSearch, router])
+
+   const btnRestrictCondition = store?.authAdmin && store?.isAuthenticated && path !== '/restrict'
 
    return (
       <>
@@ -73,7 +79,8 @@ export const Navbar = () => {
 
                   <Box display="flex" flexDir="row" alignItems="center" gap={4}>
                      <ButtonWished />
-                     {!smallScreen && <ButtonRestrictArea />}
+                     {btnRestrictCondition && <ButtonRestrictArea />}
+                     <ButtonLogout />
                   </Box>
                </Box>
                <SubNavbar />

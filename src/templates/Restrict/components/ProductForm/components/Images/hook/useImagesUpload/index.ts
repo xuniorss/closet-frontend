@@ -7,11 +7,11 @@ export const useImagesUpload = () => {
    const [files, setFiles] = useState<File[]>([])
 
    useEffect(() => {
-      if (filesContext.length <= 0) {
+      if (filesContext?.length <= 0) {
          setFiles([])
          return
       }
-   }, [filesContext.length])
+   }, [filesContext?.length])
 
    const handleDrop = useCallback(
       (acceptedFiles: File[]) => {

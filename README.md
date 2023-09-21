@@ -1,36 +1,86 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Frontend e-commerce
 
-## Getting Started
+Este projeto foi desenvolvido usando React.js 18.0.x e foi utilizado o Next.js 13.3.x, cujo objetivo do projeto seria apenas a integração com o backend em Adonis.js. Frontend consiste em dois tipos de perfil de usuário, onde o perfil perfil administrador pode cadastrar novas mercadorias e o perfil contrário não tem acesso a tal funcionalidade.
 
-First, run the development server:
+## 🚀 Começando
 
-```bash
+Para executar esta aplicação em seu ambiente local, siga os passos abaixo:
+
+### 🔧 Instalação
+
+#### 1. Clone o repositório:
+
+```shell
+git clone https://github.com/xuniorss/closet-nextjs.git
+```
+
+#### 2. Navegue até o diretório do projeto:
+
+```shell
+cd closet-nextjs
+```
+
+#### 3. Instale as dependências:
+
+```shell
+npm i
+# ou
+yarn
+```
+
+## ⚙️ Configuração para início da aplicação
+
+#### Com sua ide aberta:
+
+1. Para facilitar, disponibilizo o conteúdo da `.env`, em `NEXT_PUBLIC_WHATSSAPP_MESSAGE_API` substitua o valor `contato` por um número válido no formato com `ddd` incluso.
+
+```js
+NEXT_PUBLIC_API_BASE_URL = 'http://localhost:3333'
+NEXT_PUBLIC_COOKIES = '@nextauth.token.closet'
+NEXT_PUBLIC_AUTH_USER = 'authenticated.user'
+
+NEXT_PUBLIC_FIREBASE_API_KEY = 'AIzaSyAdXN0ESPk6AReDDU5FryvHMtaUtue6gVE'
+NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN = 'closet-nextjs-ead11.firebaseapp.com'
+NEXT_PUBLIC_FIREBASE_PROJECT_ID = 'closet-nextjs-ead11'
+NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET = 'closet-nextjs-ead11.appspot.com'
+NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID = '376785490332'
+NEXT_PUBLIC_FIREBASE_APP_ID = '1:376785490332:web:2476651c838adb9d66b859'
+
+NEXT_PUBLIC_ALL_MODELS = 'all.models.registred'
+NEXT_PUBLIC_ALL_PRODUCTS = 'all.products'
+NEXT_PUBLIC_ALL_SIZES = 'all.sizes.registred'
+NEXT_PUBLIC_MODEL_STORAGE = '@model.storage'
+NEXT_PUBLIC_ALL_COLLECTIONS = '@all.collections'
+NEXT_PUBLIC_WISHLIST = '@clst_user_wishlist'
+
+NEXT_PUBLIC_WHATSSAPP_MESSAGE_API = 'https://api.whatsapp.com/send?phone=+55{contato}&text='
+
+NEXT_PUBLIC_API_FOR_DYNAMIC_METADATA = 'http://127.0.0.1:3333'
+```
+
+### 🏃‍♂️ Iniciando o projeto
+
+```shell
 npm run dev
-# or
+# ou
 yarn dev
-# or
+# ou
 pnpm dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+-  use o perfil administrativo criado previamente no backend para acessar o sistema, após acesado será liberado um botão `Área restrita`, ao acessar a página o usuário poderá cadastrar suas mercadorias. As demais funcionalidades são intuitivas.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🛠️ Algumas libs utilizadas
 
-[http://localhost:3000/api/hello](http://localhost:3000/api/hello) is an endpoint that uses [Route Handlers](https://beta.nextjs.org/docs/routing/route-handlers). This endpoint can be edited in `app/api/hello/route.ts`.
+-  [typescript](https://www.typescriptlang.org/)
+-  [chakra-ui](https://chakra-ui.com/)
+-  [react-dropzone](https://react-dropzone.js.org/)
+-  [react-hook-form](https://react-hook-form.com/)
+-  [zod](https://zod.dev/)
+-  [zustand](https://zustand-demo.pmnd.rs/)
+-  [firebase](https://firebase.google.com/docs?hl=pt-br)
+-  [date-fns](https://date-fns.org/)
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+---
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+por [Gilberto Fortunato](https://github.com/xuniorss)

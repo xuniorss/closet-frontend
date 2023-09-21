@@ -1,5 +1,5 @@
 import { useStore } from '@/components/useStore'
-import { ProductImageProps, Products, StorageProps } from '@/models/products'
+import { StorageProps } from '@/models/products'
 import { useAuthStore } from '@/store/auth'
 import { createContext, useCallback, useEffect } from 'react'
 
@@ -32,40 +32,6 @@ export const ProductsProvider = ({ children }: ProductsProviderProps) => {
          return
       }
    }, [dispatch, key, store?.isAuthenticated])
-
-   // const wishlist = useCallback(
-   //    (product: Products, productImage: ProductImageProps[]) => {
-   //       if (!store?.isAuthenticated) return
-
-   //       const dataToSave: StorageProps = {
-   //          ...product,
-   //          productImage,
-   //       }
-
-   //       const getItemStorage = JSON.parse(localStorage.getItem(key) || '[]') as StorageProps[]
-
-   //       const verify = getItemStorage.find((value) => value.id === product.id)
-
-   //       if (!verify) {
-   //          const data = [...getItemStorage, dataToSave]
-   //          localStorage.setItem(key, JSON.stringify(data))
-   //          dispatch({ type: 'WISHED', payload: { wished: data } })
-   //          return
-   //       }
-
-   //       const idx = getItemStorage.findIndex((value) => value.id === product.id)
-   //       const removed = getItemStorage.splice(idx, 1)
-
-   //       const id = removed.map((value) => value.id)[0]
-   //       const filtered = getItemStorage.filter((value) => value.id !== id)
-
-   //       const data = [...filtered]
-
-   //       localStorage.setItem(key, JSON.stringify(data))
-   //       dispatch({ type: 'WISHED', payload: { wished: data } })
-   //    },
-   //    [dispatch, store?.isAuthenticated, key]
-   // )
 
    const valueProvider = {
       files: state.files,
