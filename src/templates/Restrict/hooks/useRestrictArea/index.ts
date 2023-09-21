@@ -1,10 +1,11 @@
-import { useAuth } from '@/hooks/useAuth'
+import { useStore } from '@/components/useStore'
 import { useProductsContext } from '@/hooks/useProductsContext'
 import { useSmallScreen } from '@/hooks/useSmallScreen'
 import { ModelsPropsList } from '@/models/modelApi'
 import { modelApi, productsApi } from '@/services/apis'
 import { uploadImageProductStorate } from '@/services/firebase/requests/products'
 import { queryClient } from '@/services/queryClient'
+import { useAuthStore } from '@/store/auth'
 import { useToast } from '@chakra-ui/react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useCallback, useId, useState } from 'react'
@@ -20,7 +21,7 @@ export const useRestrictArea = () => {
    const [creditParcel, setCreditParcel] = useState(0)
 
    const { files, filesSteate } = useProductsContext()
-   const { authAdmin } = useAuth()
+   const store = useStore(useAuthStore, (state) => state)
 
    const smallScreen = useSmallScreen()
    const toast = useToast()
@@ -28,7 +29,7 @@ export const useRestrictArea = () => {
    const { data: modelList } = useQuery<ModelsPropsList[]>({
       queryKey: process.env.NEXT_PUBLIC_ALL_MODELS,
       queryFn: () => modelApi.models(),
-      enabled: authAdmin,
+      enabled: store?.authAdmin,
    })
 
    const { mutate } = useMutation(() => productsApi.list(), {
@@ -86,7 +87,7 @@ export const useRestrictArea = () => {
    const onSubmitProducts: SubmitHandler<ProductsProps> = useCallback(
       async (data) => {
          try {
-            if (!authAdmin || !data || files.length <= 0) return
+            if (!store?.authAdmin || !data || files.length <= 0) return
 
             await new Promise((resolve) => setTimeout(resolve, 1000))
 
@@ -128,7 +129,7 @@ export const useRestrictArea = () => {
             console.error(error)
          }
       },
-      [authAdmin, files, toast, mutate, filesSteate, reset, setValue]
+      [store?.authAdmin, files, toast, mutate, filesSteate, reset, setValue]
    )
 
    return {

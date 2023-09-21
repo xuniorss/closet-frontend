@@ -1,15 +1,18 @@
-import { useAuth } from '@/hooks/useAuth'
+import { useStore } from '@/components/useStore'
+import { useAuthStore } from '@/store/auth'
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 
 export const useProtectRoute = (privateRoute: boolean = true) => {
-   const { authAdmin } = useAuth()
+   const store = useStore(useAuthStore, (state) => state)
    const router = useRouter()
 
    useEffect(() => {
-      if (authAdmin && !privateRoute) return router.push('/')
-      if (!authAdmin && privateRoute) return router.push('/signin')
+      if (!store) return
+
+      if (store.authAdmin && !privateRoute) return router.push('/')
+      if (!store.authAdmin && privateRoute) return router.push('/signin')
 
       return () => {}
-   }, [authAdmin, privateRoute, router])
+   }, [privateRoute, router, store])
 }

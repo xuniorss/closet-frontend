@@ -45,3 +45,7 @@ export type ProductsByIdProps = {
    productSize: ProductSizesProps[]
    productSpec: ProductsSpecificationProps
 }
+
+export type StorageProps = {
+   productImage: ProductImageProps[]
+} & Products

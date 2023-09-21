@@ -1,6 +1,5 @@
 'use client'
 
-import { AuthProvider } from '@/contexts/AuthContext'
 import { ProductsProvider } from '@/contexts/ProductsContext'
 import { queryClient } from '@/services/queryClient'
 import { theme } from '@/theme'
@@ -14,11 +13,9 @@ export const Providers = ({ children }: { children: ReactNode }) => {
    return (
       <CacheProvider>
          <QueryClientProvider client={queryClient}>
-            <AuthProvider>
-               <ProductsProvider>
-                  <ChakraProvider theme={theme}>{children}</ChakraProvider>
-               </ProductsProvider>
-            </AuthProvider>
+            <ProductsProvider>
+               <ChakraProvider theme={theme}>{children}</ChakraProvider>
+            </ProductsProvider>
             <ReactQueryDevtools initialIsOpen={false} />
          </QueryClientProvider>
       </CacheProvider>

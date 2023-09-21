@@ -1,3 +1,4 @@
+import { ProductImageProps, Products, StorageProps } from '@/models/products'
 import { ReactNode } from 'react'
 
 export type ProductsContextData = {

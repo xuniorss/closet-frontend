@@ -1,7 +1,8 @@
 import { ErrorMessage } from '@/components/FormErrorMessage'
-import { useAuth } from '@/hooks/useAuth'
+import { useStore } from '@/components/useStore'
 import { SizePropsRequest } from '@/models/sizes'
 import { sizeApi } from '@/services/apis'
+import { useAuthStore } from '@/store/auth'
 import { Checkbox, CheckboxGroup, FormControl, FormLabel, Stack, Tooltip } from '@chakra-ui/react'
 import { useQuery } from 'react-query'
 
@@ -12,13 +13,13 @@ type SSizesProps = {
 } & FormProps
 
 export const SSizes = ({ form, errors }: SSizesProps) => {
-   const { authAdmin } = useAuth()
+   const store = useStore(useAuthStore, (state) => state)
    const { register } = form
 
    const { data: dataSizes } = useQuery<SizePropsRequest[]>({
       queryKey: process.env.NEXT_PUBLIC_ALL_SIZES,
       queryFn: () => sizeApi.index(),
-      enabled: !!authAdmin,
+      enabled: !!store?.authAdmin,
    })
 
    return (
