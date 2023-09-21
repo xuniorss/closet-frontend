@@ -11,13 +11,13 @@ Para executar esta aplicação em seu ambiente local, siga os passos abaixo:
 #### 1. Clone o repositório:
 
 ```shell
-git clone https://github.com/xuniorss/closet-nextjs.git
+git clone https://github.com/xuniorss/closet-frontend.git
 ```
 
 #### 2. Navegue até o diretório do projeto:
 
 ```shell
-cd closet-nextjs
+cd closet-frontend
 ```
 
 #### 3. Instale as dependências:
